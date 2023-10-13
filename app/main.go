@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	milvus()
+
 	r := mux.NewRouter()
 
 	r.HandleFunc("/hello", sayHello).Methods("GET")
