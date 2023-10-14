@@ -19,7 +19,7 @@ const (
 	idCol, projectNameCol, embeddingCol = "ID", "projectName", "embeddings"
 
 	nlist  = 128
-	nprobe = 16
+	nprobe = 32
 
 	msgFmt                              = "==== %s ====\n"
 	topK                                = 3  // number of the most similar result to return
@@ -75,8 +75,14 @@ func loadAdsCollection(ctx context.Context, c client.Client, collectionName stri
 	}
 }
 
-func searchSimilarAds(ctx context.Context, c client.Client, projectName string, embeddings []float32) []client.SearchResult {
-	vec2search := []entity.Vector{entity.FloatVector(embeddings)}
+func searchSimilarAds(
+	ctx context.Context,
+	c client.Client,
+	collectionName string,
+	projectName string,
+	embedding []float32,
+) client.SearchResult {
+	vec2search := []entity.Vector{entity.FloatVector(embedding)}
 	begin := time.Now()
 	sp, _ := entity.NewIndexIvfFlatSearchParam(nprobe)
 	sRet, err := c.Search(
@@ -84,7 +90,7 @@ func searchSimilarAds(ctx context.Context, c client.Client, projectName string, 
 		collectionName,
 		nil,
 		"projectName == " + "'" + projectName + "'",
-		[]string{projectNameCol},
+		[]string{idCol, projectNameCol},
 		vec2search,
 		embeddingCol,
 		entity.L2,
@@ -97,7 +103,7 @@ func searchSimilarAds(ctx context.Context, c client.Client, projectName string, 
 	}
 
 	log.Printf("\tsearch latency: %dms\n", end.Sub(begin)/time.Millisecond)
-	return sRet
+	return sRet[0]
 }
 
 func deleteAds(ctx context.Context, c client.Client, collectionName string, ids []int64) {
@@ -209,11 +215,9 @@ func milvus() {
 	loadAdsCollection(ctx, c, collectionName)
 
 	log.Printf(msgFmt, "start searcching based on vector similarity")
-	sRet := searchSimilarAds(ctx, c, "project", embeddingList[len(embeddingList)-1])
+	sRet := searchSimilarAds(ctx, c, collectionName, "project", embeddingList[len(embeddingList)-1])
 	log.Println("results:")
-	for _, res := range sRet {
-		printResult(&res)
-	}
+	printResult(&sRet)
 
 	// delete data
 	deleteAds(ctx, c, collectionName, []int64{0, 1})
@@ -223,20 +227,20 @@ func milvus() {
 }
 
 func printResult(sRet *client.SearchResult) {
-	randoms := make([]float64, 0, sRet.ResultCount)
+	randoms := make([]string, 0, sRet.ResultCount)
 	scores := make([]float32, 0, sRet.ResultCount)
 
-	var randCol *entity.ColumnDouble
+	var projectCol *entity.ColumnVarChar
 	for _, field := range sRet.Fields {
 		if field.Name() == projectNameCol {
-			c, ok := field.(*entity.ColumnDouble)
+			c, ok := field.(*entity.ColumnVarChar)
 			if ok {
-				randCol = c
+				projectCol = c
 			}
 		}
 	}
 	for i := 0; i < sRet.ResultCount; i++ {
-		val, err := randCol.ValueByIdx(i)
+		val, err := projectCol.ValueByIdx(i)
 		if err != nil {
 			log.Fatal(err)
 		}
