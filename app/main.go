@@ -12,7 +12,12 @@ import (
 )
 
 const (
-	milvusAddr = `localhost:19530`
+	milvusAddr     = `localhost:19530`
+
+	openAIEndpoint     = "https://api.openai.com/v1/embeddings"
+	embeddingModel     = "text-embedding-ada-002"
+	embeddingCtxLength = 8191
+	embeddingEncoding  = "cl100k_base"
 )
 
 type App struct {
@@ -54,6 +59,11 @@ type Ad struct {
     Text        string `json:"text"`
 }
 
+type InsertResponse struct {
+    Status  string `json:"status"`
+    Details string `json:"details"`
+}
+
 func (a *App) insertAd(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var ad Ad
@@ -64,5 +74,28 @@ func (a *App) insertAd(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    json.NewEncoder(w).Encode(ad)
+	embedding, err := getEmbedding(ad.Text)
+	if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
+	ids := []int64{ad.ID}
+	projectNames := []string{ad.ProjectName}
+	embeddings := [][]float32{embedding}
+	insertAds(
+		r.Context(),
+		*a.MilvusClient,
+		collectionName,
+		ids,
+		projectNames,
+		embeddings,
+	)
+
+	response := InsertResponse{
+		Status:  "success",
+		Details: "Record inserted successfully",
+	}
+
+    json.NewEncoder(w).Encode(response)
 }

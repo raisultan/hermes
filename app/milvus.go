@@ -39,7 +39,7 @@ func createAdsCollection(ctx context.Context, c client.Client, collectionName st
 	}
 }
 
-func importAds(ctx context.Context, c client.Client, collectionName string, ids []int64, projectNames []string, embeddings [][]float32) {
+func insertAds(ctx context.Context, c client.Client, collectionName string, ids []int64, projectNames []string, embeddings [][]float32) {
 	idColData := entity.NewColumnInt64(idCol, ids)
 	projectNameColData := entity.NewColumnVarChar(projectNameCol, projectNames)
 	embeddingColData := entity.NewColumnFloatVector(embeddingCol, dim, embeddings)
@@ -201,7 +201,7 @@ func milvus() {
 		}
 		embeddingList = append(embeddingList, vec)
 	}
-	importAds(ctx, c, collectionName, idList, randomList, embeddingList)
+	insertAds(ctx, c, collectionName, idList, randomList, embeddingList)
 
 	// build index
 	buildAdsIndex(ctx, c, collectionName)
