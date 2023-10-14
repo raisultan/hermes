@@ -2,32 +2,14 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"math/rand"
 	"time"
 
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
 )
 
-const (
-	// milvusAddr     = `localhost:19530`
-	dim            = 1536
-	collectionName = "ads"
-
-	idCol, projectNameCol, embeddingCol = "ID", "projectName", "embeddings"
-
-	nlist  = 128
-	nprobe = 32
-
-	msgFmt                              = "==== %s ====\n"
-	topK                                = 3  // number of the most similar result to return
-	nEntities                           = 3000
-)
-
 func createAdsCollection(ctx context.Context, c client.Client, collectionName string) {
-	log.Printf(msgFmt, fmt.Sprintf("create collection, `%s`", collectionName))
 	schema := entity.NewSchema().
 		WithName(collectionName).WithDescription("Ads Collection").
 		WithField(entity.NewField().WithName(idCol).WithDataType(entity.FieldTypeInt64).WithIsPrimaryKey(true).WithIsAutoID(false)).
@@ -39,7 +21,14 @@ func createAdsCollection(ctx context.Context, c client.Client, collectionName st
 	}
 }
 
-func insertAds(ctx context.Context, c client.Client, collectionName string, ids []int64, projectNames []string, embeddings [][]float32) {
+func insertAd(
+	ctx context.Context,
+	c client.Client,
+	collectionName string,
+	ids []int64,
+	projectNames []string,
+	embeddings [][]float32,
+) {
 	idColData := entity.NewColumnInt64(idCol, ids)
 	projectNameColData := entity.NewColumnVarChar(projectNameCol, projectNames)
 	embeddingColData := entity.NewColumnFloatVector(embeddingCol, dim, embeddings)
@@ -54,7 +43,6 @@ func insertAds(ctx context.Context, c client.Client, collectionName string, ids 
 }
 
 func buildAdsIndex(ctx context.Context, c client.Client, collectionName string) {
-	log.Printf(msgFmt, "start creating index IVF_FLAT")
 	idx, err := entity.NewIndexIvfFlat(entity.L2, nlist)
 
 	if err != nil {
@@ -67,7 +55,6 @@ func buildAdsIndex(ctx context.Context, c client.Client, collectionName string) 
 }
 
 func loadAdsCollection(ctx context.Context, c client.Client, collectionName string) {
-	log.Printf(msgFmt, "start loading collection")
 	err := c.LoadCollection(ctx, collectionName, false)
 
 	if err != nil {
@@ -107,7 +94,6 @@ func searchSimilarAds(
 }
 
 func deleteAds(ctx context.Context, c client.Client, collectionName string, ids []int64) {
-	log.Printf(msgFmt, "start deleting with expr ``")
 	pks := entity.NewColumnInt64(idCol, ids)
 	sRet, err := c.QueryByPks(ctx, collectionName, nil, pks, []string{projectNameCol})
 	if err != nil {
@@ -139,7 +125,6 @@ func deleteAds(ctx context.Context, c client.Client, collectionName string, ids 
 			}
 		}
 	}
-	log.Printf("\tids: %#v, randoms: %#v\n", idlist, randList)
 
 	if err := c.DeleteByPks(ctx, collectionName, "", pks); err != nil {
 		log.Fatalf("failed to delete by pks, err: %v", err)
@@ -158,94 +143,7 @@ func deleteAds(ctx context.Context, c client.Client, collectionName string, ids 
 }
 
 func dropAdsCollection(ctx context.Context, c client.Client, collectionName string) {
-	log.Printf(msgFmt, "drop collection `hello_milvus`")
 	if err := c.DropCollection(ctx, collectionName); err != nil {
 		log.Fatalf("failed to drop collection, err: %v", err)
 	}
-}
-
-func milvus() {
-	ctx := context.Background()
-
-	log.Printf(msgFmt, "start connecting to Milvus")
-	c, err := client.NewClient(ctx, client.Config{Address: milvusAddr})
-	if err != nil {
-		log.Fatal("failed to connect to milvus, err: ", err.Error())
-	}
-	defer c.Close()  // closes the client right after exit from the current function
-
-	// delete collection if exists
-	has, err := c.HasCollection(ctx, collectionName)
-	if err != nil {
-		log.Fatalf("failed to check collection exists, err: %v", err)
-	}
-	if has {
-		c.DropCollection(ctx, collectionName)
-	}
-
-	// create collection
-	createAdsCollection(ctx, c, collectionName)
-
-	// insert data
-	log.Printf(msgFmt, "start inserting random entities")
-	idList, randomList := make([]int64, 0, nEntities), make([]string, 0, nEntities)
-	embeddingList := make([][]float32, 0, nEntities)
-
-	rand.Seed(time.Now().UnixNano())
-
-	// generate data
-	for i := 0; i < nEntities; i++ {
-		idList = append(idList, int64(i))
-	}
-	for i := 0; i < nEntities; i++ {
-		randomList = append(randomList, "hello")
-	}
-	for i := 0; i < nEntities; i++ {
-		vec := make([]float32, 0, dim)
-		for j := 0; j < dim; j++ {
-			vec = append(vec, rand.Float32())
-		}
-		embeddingList = append(embeddingList, vec)
-	}
-	insertAds(ctx, c, collectionName, idList, randomList, embeddingList)
-
-	// build index
-	buildAdsIndex(ctx, c, collectionName)
-
-	loadAdsCollection(ctx, c, collectionName)
-
-	log.Printf(msgFmt, "start searcching based on vector similarity")
-	sRet := searchSimilarAds(ctx, c, collectionName, "project", embeddingList[len(embeddingList)-1])
-	log.Println("results:")
-	printResult(&sRet)
-
-	// delete data
-	deleteAds(ctx, c, collectionName, []int64{0, 1})
-
-	// drop collection
-	// dropAdsCollection(ctx, c, collectionName)
-}
-
-func printResult(sRet *client.SearchResult) {
-	randoms := make([]string, 0, sRet.ResultCount)
-	scores := make([]float32, 0, sRet.ResultCount)
-
-	var projectCol *entity.ColumnVarChar
-	for _, field := range sRet.Fields {
-		if field.Name() == projectNameCol {
-			c, ok := field.(*entity.ColumnVarChar)
-			if ok {
-				projectCol = c
-			}
-		}
-	}
-	for i := 0; i < sRet.ResultCount; i++ {
-		val, err := projectCol.ValueByIdx(i)
-		if err != nil {
-			log.Fatal(err)
-		}
-		randoms = append(randoms, val)
-		scores = append(scores, sRet.Scores[i])
-	}
-	log.Printf("\trandoms: %v, scores: %v\n", randoms, scores)
 }
