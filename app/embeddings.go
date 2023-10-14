@@ -6,9 +6,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
+)
 
-	"github.com/joho/godotenv"
+const (
+	openAIEmbeddinEndpoint = "https://api.openai.com/v1/embeddings"
+
+	embeddingModel         = "text-embedding-ada-002"
+	embeddingCtxLength     = 8191
+	embeddingEncoding      = "cl100k_base"
 )
 
 type Response struct {
@@ -29,24 +34,14 @@ type Usage struct {
 	TotalTokens  int `json:"total_tokens"`
 }
 
-func getEmbedding(text string) ([]float32, error) {
-	if err := godotenv.Load(); err != nil {
-        panic("Error loading .env file")
-    }
-
-    openAiApiKey := os.Getenv("OPENAI_API_KEY")
-    if openAiApiKey == "" {
-        panic("OPENAI_API_KEY is not set in environment variables or .env file")
-    }
-
+func getEmbedding(openAiApiKey string, text string) ([]float32, error) {
 	data := map[string]string{"input": text, "model": embeddingModel}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
 	}
 
-	// Make the HTTP request
-	req, err := http.NewRequest("POST", openAIEndpoint, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", openAIEmbeddinEndpoint, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, err
 	}

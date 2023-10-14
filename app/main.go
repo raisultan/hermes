@@ -5,43 +5,54 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 )
 
-const (
-	milvusAddr     = `localhost:19530`
-	dim            = 1536
-	collectionName = "ads"
+type Config struct {
+	MilvusAddr        string
+	OpenAIApiKey       string
+}
 
-	idCol, projectNameCol, embeddingCol = "ID", "projectName", "embeddings"
+func NewConfig() (*Config, error) {
+	if err := godotenv.Load(); err != nil {
+		panic("Error loading .env file")
+	}
 
-	nlist  = 128
-	nprobe = 32
-	topK   = 3
+	openAiApiKey := os.Getenv("OPENAI_API_KEY")
+    if openAiApiKey == "" {
+        panic("OPENAI_API_KEY is not set in environment variables or .env file")
+    }
 
-	openAIEndpoint     = "https://api.openai.com/v1/embeddings"
-	embeddingModel     = "text-embedding-ada-002"
-	embeddingCtxLength = 8191
-	embeddingEncoding  = "cl100k_base"
-)
+	cfg := &Config{
+		MilvusAddr        : `localhost:19530`,
+		OpenAIApiKey       : openAiApiKey,
+	}
+
+	return cfg, nil
+}
 
 type App struct {
     MilvusClient *client.Client
+	Config       *Config
 }
 
 func main() {
 	ctx := context.Background()
+	config, _ := NewConfig()
 
-	milvus, err := client.NewClient(ctx, client.Config{Address: milvusAddr})
+	milvusClient, err := client.NewClient(ctx, client.Config{Address: config.MilvusAddr})
 	if err != nil {
-		log.Fatal("failed to connect to milvus, err: ", err.Error())
+		log.Fatal("failed to connect to milvus, err: ", err)
 	}
-	defer milvus.Close()
+	defer milvusClient.Close()
 
 	app := &App{
-		MilvusClient: &milvus,
+		MilvusClient: &milvusClient,
+		Config: config,
 	}
 
 	r := mux.NewRouter()

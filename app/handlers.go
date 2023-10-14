@@ -8,7 +8,7 @@ import (
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
 )
 
-func (a *App) sayHello(w http.ResponseWriter, r *http.Request) {
+func (app *App) sayHello(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode("Hello World!")
 }
@@ -24,7 +24,7 @@ type InsertAdResponse struct {
 	Details string `json:"details"`
 }
 
-func (a *App) insertAdHandler(w http.ResponseWriter, r *http.Request) {
+func (app *App) insertAdHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var ad InsertAdRequest
 
@@ -34,7 +34,7 @@ func (a *App) insertAdHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	embedding, err := getEmbedding(ad.Text)
+	embedding, err := getEmbedding(app.Config.OpenAIApiKey, ad.Text)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -45,8 +45,7 @@ func (a *App) insertAdHandler(w http.ResponseWriter, r *http.Request) {
 	embeddings := [][]float32{embedding}
 	insertAd(
 		r.Context(),
-		*a.MilvusClient,
-		collectionName,
+		*app.MilvusClient,
 		ids,
 		projectNames,
 		embeddings,
@@ -71,7 +70,7 @@ type SearchAdResult struct {
 	Distance    float32 `json:"distance"`
 }
 
-func (a *App) searchSimilarAdsHandler(w http.ResponseWriter, r *http.Request) {
+func (app *App) searchSimilarAdsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var ad SearchAdRequest
 
@@ -81,19 +80,18 @@ func (a *App) searchSimilarAdsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	embedding, err := getEmbedding(ad.Text)
+	embedding, err := getEmbedding(app.Config.OpenAIApiKey, ad.Text)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	ctx := r.Context()
-	loadAdsCollection(ctx, *a.MilvusClient, collectionName)
+	loadAdsCollection(ctx, *app.MilvusClient)
 
 	sRet := searchSimilarAds(
 		r.Context(),
-		*a.MilvusClient,
-		collectionName,
+		*app.MilvusClient,
 		ad.ProjectName,
 		embedding,
 	)
@@ -103,13 +101,13 @@ func (a *App) searchSimilarAdsHandler(w http.ResponseWriter, r *http.Request) {
 	var projectNameValues *entity.ColumnVarChar
 
 	for _, field := range sRet.Fields {
-		if field.Name() == projectNameCol {
+		if field.Name() == projectColumnName {
 			c, ok := field.(*entity.ColumnVarChar)
 			if ok {
 				projectNameValues = c
 			}
 		}
-		if field.Name() == idCol {
+		if field.Name() == idColumnName {
 			c, ok := field.(*entity.ColumnInt64)
 			if ok {
 				idValues = c
