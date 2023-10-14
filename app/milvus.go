@@ -12,11 +12,14 @@ import (
 )
 
 const (
-	milvusAddr     = `localhost:19530`
+	// milvusAddr     = `localhost:19530`
 	dim            = 1536
 	collectionName = "ads"
 
 	idCol, projectNameCol, embeddingCol = "ID", "projectName", "embeddings"
+
+	nlist  = 128
+	nprobe = 16
 
 	msgFmt                              = "==== %s ====\n"
 	topK                                = 3  // number of the most similar result to return
@@ -52,7 +55,7 @@ func importAds(ctx context.Context, c client.Client, collectionName string, ids 
 
 func buildAdsIndex(ctx context.Context, c client.Client, collectionName string) {
 	log.Printf(msgFmt, "start creating index IVF_FLAT")
-	idx, err := entity.NewIndexIvfFlat(entity.L2, 128)
+	idx, err := entity.NewIndexIvfFlat(entity.L2, nlist)
 
 	if err != nil {
 		log.Fatalf("failed to create ivf flat index, err: %v", err)
@@ -75,7 +78,7 @@ func loadAdsCollection(ctx context.Context, c client.Client, collectionName stri
 func searchSimilarAds(ctx context.Context, c client.Client, projectName string, embeddings []float32) []client.SearchResult {
 	vec2search := []entity.Vector{entity.FloatVector(embeddings)}
 	begin := time.Now()
-	sp, _ := entity.NewIndexIvfFlatSearchParam(16)
+	sp, _ := entity.NewIndexIvfFlatSearchParam(nprobe)
 	sRet, err := c.Search(
 		ctx,
 		collectionName,
