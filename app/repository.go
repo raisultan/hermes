@@ -15,7 +15,7 @@ const (
 
 	idColumnName        = "ID"
 	projectColumnName   = "projectName"
-	embeddingColumnName = "embeddings"  // no s in the end
+	embeddingColumnName = "embeddings" // no s in the end
 
 	nClusters      = 128
 	nProbes        = 32
@@ -24,25 +24,25 @@ const (
 
 func createAdsCollection(ctx context.Context, c client.Client) {
 	schema := entity.NewSchema().
-	WithName(adsCollectionName).WithDescription("Ads Collection").
-	WithField(
-		entity.NewField().
-		WithName(idColumnName).
-		WithDataType(entity.FieldTypeInt64).
-		WithIsPrimaryKey(true).WithIsAutoID(false),
-	).
-	WithField(
-		entity.NewField().
-		WithName(projectColumnName).
-		WithDataType(entity.FieldTypeVarChar).
-		WithMaxLength(256),
-	).
-	WithField(
-		entity.NewField().
-		WithName(embeddingColumnName).
-		WithDataType(entity.FieldTypeFloatVector).
-		WithDim(nDimensions),
-	)
+		WithName(adsCollectionName).WithDescription("Ads Collection").
+		WithField(
+			entity.NewField().
+				WithName(idColumnName).
+				WithDataType(entity.FieldTypeInt64).
+				WithIsPrimaryKey(true).WithIsAutoID(false),
+		).
+		WithField(
+			entity.NewField().
+				WithName(projectColumnName).
+				WithDataType(entity.FieldTypeVarChar).
+				WithMaxLength(256),
+		).
+		WithField(
+			entity.NewField().
+				WithName(embeddingColumnName).
+				WithDataType(entity.FieldTypeFloatVector).
+				WithDim(nDimensions),
+		)
 
 	err := c.CreateCollection(ctx, schema, entity.DefaultShardNumber)
 	if err != nil {
@@ -104,7 +104,7 @@ func searchSimilarAds(
 		ctx,
 		adsCollectionName,
 		nil,
-		"projectName == " + "'" + projectName + "'",
+		"projectName == "+"'"+projectName+"'",
 		[]string{idColumnName, projectColumnName},
 		vec2search,
 		embeddingColumnName,
@@ -173,5 +173,13 @@ func deleteAds(ctx context.Context, c client.Client, ids []int64) {
 func dropAdsCollection(ctx context.Context, c client.Client) {
 	if err := c.DropCollection(ctx, adsCollectionName); err != nil {
 		log.Fatalf("failed to drop collection, err: %v", err)
+	}
+}
+
+func deleteAd(ctx context.Context, c client.Client, ids []int64) {
+	pks := entity.NewColumnInt64(idColumnName, ids)
+
+	if err := c.DeleteByPks(ctx, adsCollectionName, "", pks); err != nil {
+		log.Fatalf("failed to delete by pks, err: %v", err)
 	}
 }

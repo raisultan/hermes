@@ -13,8 +13,8 @@ import (
 )
 
 type Config struct {
-	MilvusAddr        string
-	OpenAIApiKey       string
+	MilvusAddr   string
+	OpenAIApiKey string
 }
 
 func NewConfig() (*Config, error) {
@@ -23,20 +23,20 @@ func NewConfig() (*Config, error) {
 	}
 
 	openAiApiKey := os.Getenv("OPENAI_API_KEY")
-    if openAiApiKey == "" {
-        panic("OPENAI_API_KEY is not set in environment variables or .env file")
-    }
+	if openAiApiKey == "" {
+		panic("OPENAI_API_KEY is not set in environment variables or .env file")
+	}
 
 	cfg := &Config{
-		MilvusAddr        : `localhost:19530`,
-		OpenAIApiKey       : openAiApiKey,
+		MilvusAddr:   `localhost:19530`,
+		OpenAIApiKey: openAiApiKey,
 	}
 
 	return cfg, nil
 }
 
 type App struct {
-    MilvusClient *client.Client
+	MilvusClient *client.Client
 	Config       *Config
 }
 
@@ -52,7 +52,7 @@ func main() {
 
 	app := &App{
 		MilvusClient: &milvusClient,
-		Config: config,
+		Config:       config,
 	}
 
 	r := mux.NewRouter()
@@ -60,6 +60,7 @@ func main() {
 	r.HandleFunc("/hello", app.sayHello).Methods("GET")
 	r.HandleFunc("/api/ads/insert", app.insertAdHandler).Methods("POST")
 	r.HandleFunc("/api/ads/search", app.searchSimilarAdsHandler).Methods("POST")
+	r.HandleFunc("/api/ads/delete", app.deleteAdHandler).Methods("DELETE")
 
 	http.Handle("/", r)
 	fmt.Println("Server started on :8080")

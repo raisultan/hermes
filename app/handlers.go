@@ -126,11 +126,41 @@ func (app *App) searchSimilarAdsHandler(w http.ResponseWriter, r *http.Request) 
 		}
 
 		searchResults = append(searchResults, SearchAdResult{
-			ID: idValue,
+			ID:          idValue,
 			ProjectName: projectNameValue,
-			Distance: sRet.Scores[i],
+			Distance:    sRet.Scores[i],
 		})
 	}
 
 	json.NewEncoder(w).Encode(searchResults)
+}
+
+type DeleteAdRequest struct {
+	ID int64 `json:"id"`
+}
+
+type DeleteAdResponse struct {
+	Status  string `json:"status"`
+	Details string `json:"details"`
+}
+
+func (app *App) deleteAdHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var ad DeleteAdRequest
+
+	err := json.NewDecoder(r.Body).Decode(&ad)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	ctx := r.Context()
+	deleteAd(ctx, *app.MilvusClient, []int64{ad.ID})
+
+	response := InsertAdResponse{
+		Status:  "success",
+		Details: "Record inserted successfully",
+	}
+
+	json.NewEncoder(w).Encode(response)
 }
