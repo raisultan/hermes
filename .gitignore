@@ -8,3 +8,4 @@ dumps/
 .DS_Store
 *.pdf
 app/out/
+__pycache__/

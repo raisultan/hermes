@@ -8,10 +8,14 @@ path = FieldSchema(
   is_primary=True,
   max_length=1024,
 )
+page = FieldSchema(
+    name="page",
+    dtype=DataType.INT16,
+)
 text = FieldSchema(
   name="text",
   dtype=DataType.VARCHAR,
-  max_length=65_535,
+  max_length=16_384,
 )
 embedding = FieldSchema(
   name="embedding",
@@ -20,7 +24,7 @@ embedding = FieldSchema(
 )
 
 schema = CollectionSchema(
-  fields=[path, text, embedding],
+  fields=[path, page, text, embedding],
   description="Documents",
 )
 collection_name = "docs"

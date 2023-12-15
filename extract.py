@@ -1,6 +1,18 @@
+from dataclasses import dataclass
+
 import pypdfium2 as pdfium
 
-def pdf_extract(path: str) -> str:
+
+@dataclass
+class PDFPage:
+    num: int
+    content: str
+
+
+def pdf_extract(path: str) -> list[PDFPage]:
     pdf = pdfium.PdfDocument(path)
-    pages_content = [p.get_textpage().get_text_range() for p in pdf]
-    return "\n".join(pages_content)
+    pages = []
+    for num, page in enumerate(pdf, start=1):
+        content = page.get_textpage().get_text_range()
+        pages.append(PDFPage(num, content))
+    return pages
