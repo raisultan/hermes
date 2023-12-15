@@ -7,3 +7,4 @@ dumps/
 *.code-workspace
 .DS_Store
 *.pdf
+app/out/
