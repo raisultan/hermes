@@ -3,3 +3,7 @@
 volumes/
 dumps/
 .idea
+.python-version
+*.code-workspace
+.DS_Store
+*.pdf

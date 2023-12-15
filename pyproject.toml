@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "hermes"
+version = "0.1.0"
+description = ""
+authors = ["raisultan <ki.xbozz@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pypdfium2 = "4.25.0"
+openai = "1.4.0"
+pymilvus = "2.3.0"
+tiktoken = "0.5.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

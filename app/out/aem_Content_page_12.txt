@@ -1,0 +1,71 @@
+0 g 0 G
+0 g 0 G
+0 g 0 G
+BT
+/F84 9.9626 Tf 108 710.037 Td [([25])]TJ
+0 g 0 G
+ 0.98 0 0 1 129.579 710.037 Tm [(Mitchell)-205(P)-206(Marcus,)-215(Mary)-205(Ann)-206(Marcinkie)26(wicz,)-216(and)-205(Beatrice)-205(Santorini.)-260(Building)-205(a)-206(lar)19(ge)-206(annotated)]TJ 1 0 0 1 129.579 699.128 Tm [(corpus)-250(of)-250(english:)-310(The)-250(penn)-250(treebank.)]TJ/F218 9.9626 Tf 154.699 0 Td [(Computational)-250(linguistics)]TJ/F84 9.9626 Tf 103.241 0 Td [(,)-250(19\0502\051:313\226330,)-250(1993.)]TJ
+0 g 0 G
+ -279.519 -23.483 Td [([26])]TJ
+0 g 0 G
+ 1.003 0 0 1 129.579 675.645 Tm [(Da)20(vid)-250(McClosk)15(y)65(,)-251(Eugene)-250(Charniak,)-250(and)-250(Mark)-250(Johnson.)-362(Ef)25(fecti)25(v)15(e)-250(self-training)-250(for)-250(parsing.)-362(In)]TJ/F218 9.9626 Tf 0.993 0 0 1 129.27 664.736 Tm [(Pr)45(oceedings)-251(of)-252(the)-252(Human)-251(Langua)10(g)10(e)-252(T)93(ec)15(hnolo)10(gy)-252(Confe)1(r)37(ence)-252(of)-251(the)-252(N)27(AA)30(CL,)-251(Main)-252(Confer)37(ence)]TJ/F84 9.9626 Tf 0.993 0 0 1 502.772 664.736 Tm [(,)]TJ 1 0 0 1 129.579 653.827 Tm [(pages)-250(152\226159.)-250(A)40(CL,)-250(June)-250(2006.)]TJ
+0 g 0 G
+ -21.579 -23.483 Td [([27])]TJ
+0 g 0 G
+ 0.98 0 0 1 129.579 630.344 Tm [(Ankur)-243(P)15(arikh,)-246(Oscar)-243(T\344ckstr\366m,)-245(Dipanjan)-244(Das,)-245(and)-244(Jak)11(ob)-244(Uszk)11(oreit.)-342(A)-243(decomposable)-244(attention)]TJ 1 0 0 1 129.579 619.435 Tm [(model.)-360(In)]TJ/F218 9.9626 Tf 41.773 0 Td [(Empirical)-250(Methods)-250(in)-250(Natur)15(al)-250(Langua)10(g)10(e)-250(Pr)45(ocessing)]TJ/F84 9.9626 Tf 208.696 0 Td [(,)-250(2016.)]TJ
+0 g 0 G
+ -272.048 -23.483 Td [([28])]TJ
+0 g 0 G
+ 0.999 0 0 1 129.579 595.952 Tm [(Romain)-249(P)15(aulus,)-249(Caiming)-249(Xiong,)-250(and)-249(Richard)-249(Socher)56(.)-358(A)-249(deep)-249(reinforced)-249(model)-249(for)-249(abstracti)25(v)15(e)]TJ 1 0 0 1 129.579 585.043 Tm [(summarization.)]TJ/F218 9.9626 Tf 65.294 0 Td [(arXiv)-250(pr)37(eprint)-250(arXiv:1705.04304)]TJ/F84 9.9626 Tf 132.183 0 Td [(,)-250(2017.)]TJ
+0 g 0 G
+ -219.056 -23.483 Td [([29])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 561.56 Tm [(Sla)20(v)-343(Petro)15(v)64(,)-367(Leon)-342(Barrett,)-367(Romain)-342(Thibaux,)-367(and)-342(Dan)-342(Klein.)-664(Learning)-343(accurate,)-366(compact,)]TJ 1.02 0 0 1 129.579 550.651 Tm [(and)-341(interpretable)-341(tree)-341(annotation.)-660(In)]TJ/F218 9.9626 Tf 1.02 0 0 1 285.32 550.651 Tm [(Pr)44(oceedings)-341(of)-341(the)-341(21st)-341(International)-341(Confer)36(ence)-341(on)]TJ 1.02 0 0 1 129.25 539.742 Tm [(Computational)-260(Linguistics)-260(and)-259(44th)-260(Annual)-260(Meeting)-260(of)-260(the)-260(A)30(CL)]TJ/F84 9.9626 Tf 1.02 0 0 1 390.595 539.742 Tm [(,)-260(pages)-260(433\226440.)-260(A)40(CL,)-260(July)]TJ 1 0 0 1 129.579 528.833 Tm [(2006.)]TJ
+0 g 0 G
+ -21.579 -23.483 Td [([30])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 505.35 Tm [(O\002r)-283(Press)-284(and)-283(Lior)-283(W)78(olf.)-475(Using)-284(the)-283(output)-283(embedding)-284(to)-283(impro)15(v)14(e)-283(language)-283(models.)]TJ/F218 9.9626 Tf 1.02 0 0 1 481.421 505.35 Tm [(arXiv)]TJ 1 0 0 1 129.579 494.441 Tm [(pr)37(eprint)-250(arXiv:1608.05859)]TJ/F84 9.9626 Tf 107.556 0 Td [(,)-250(2016.)]TJ
+0 g 0 G
+ -129.135 -23.483 Td [([31])]TJ
+0 g 0 G
+ 0.992 0 0 1 129.579 470.958 Tm [(Rico)-253(Sennrich,)-253(Barry)-253(Haddo)25(w)65(,)-253(and)-253(Ale)15(xandra)-253(Birch.)-366(Neural)-253(machine)-253(translation)-253(of)-253(rare)-253(w)10(ords)]TJ 1 0 0 1 129.22 460.049 Tm [(with)-250(subw)10(ord)-250(units.)]TJ/F218 9.9626 Tf 82.361 0 Td [(arXiv)-250(pr)37(eprint)-250(arXiv:1508.07909)]TJ/F84 9.9626 Tf 132.183 0 Td [(,)-250(2015.)]TJ
+0 g 0 G
+ -235.764 -23.483 Td [([32])]TJ
+0 g 0 G
+ 0.988 0 0 1 129.579 436.566 Tm [(Noam)-252(Shazeer)40(,)-252(Azalia)-253(Mirhoseini,)-252(Krzysztof)-252(Maziarz,)-253(Andy)-252(Da)20(vis,)-253(Quoc)-252(Le,)-252(Geof)25(fre)15(y)-253(Hinton,)]TJ 1.02 0 0 1 129.579 425.657 Tm [(and)-293(Jef)25(f)-293(Dean.)-506(Outrageously)-293(lar)18(ge)-293(neural)-293(netw)10(orks:)-400(The)-292(sparsely-g)4(ated)-292(mixture-of-e)14(xperts)]TJ 1 0 0 1 129.579 414.748 Tm [(layer)55(.)]TJ/F218 9.9626 Tf 25.444 0 Td [(arXiv)-250(pr)37(eprint)-250(arXiv:1701.06538)]TJ/F84 9.9626 Tf 132.184 0 Td [(,)-250(2017.)]TJ
+0 g 0 G
+ -179.207 -23.483 Td [([33])]TJ
+0 g 0 G
+ 0.996 0 0 1 129.579 391.265 Tm [(Nitish)-250(Sri)25(v)25(asta)20(v)25(a,)-250(Geof)25(fre)15(y)-250(E)-250(Hinton,)-250(Ale)15(x)-250(Krizhe)25(vsk)15(y)65(,)-250(Ilya)-250(Sutsk)10(e)25(v)15(er)40(,)-250(and)-250(Ruslan)-250(Salakhutdi-)]TJ 1.013 0 0 1 129.579 380.356 Tm [(no)15(v)64(.)-355(Dropout:)-305(a)-247(simple)-246(w)10(ay)-247(to)-246(pre)25(v)14(ent)-246(neural)-246(netw)10(orks)-247(from)-246(o)15(v)14(er\002tting.)]TJ/F218 9.9626 Tf 1.013 0 0 1 424.865 380.356 Tm [(J)25(ournal)-247(of)-246(Mac)15(hine)]TJ 1 0 0 1 129.3 369.447 Tm [(Learning)-250(Resear)37(c)15(h)]TJ/F84 9.9626 Tf 75.576 0 Td [(,)-250(15\0501\051:1929\2261958,)-250(2014.)]TJ
+0 g 0 G
+ -96.876 -23.483 Td [([34])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 345.964 Tm [(Sainbayar)-311(Sukhbaatar)39(,)-327(Arthur)-311(S)1(zlam,)-328(Jason)-310(W)78(eston,)-327(and)-311(Rob)-311(Fer)18(gus.)-563(End-to-end)-311(memory)]TJ 1.02 0 0 1 129.579 335.054 Tm [(netw)10(orks.)-506(In)-293(C.)-293(Cortes,)-305(N.)-292(D.)-293(La)14(wrence,)-304(D.)-293(D.)-293(Lee,)-305(M.)-293(Sugiyama,)-305(and)-293(R.)-292(Garnett,)-305(editors,)]TJ/F218 9.9626 Tf 0.999 0 0 1 128.971 324.145 Tm [(Advances)-251(in)-251(Neur)15(al)-251(Information)-251(Pr)45(ocessing)-251(Systems)-251(28)]TJ/F84 9.9626 Tf 0.999 0 0 1 350.134 324.145 Tm [(,)-251(pages)-251(2440\2262448.)-251(Curran)-251(Associates,)]TJ 1 0 0 1 129.579 313.236 Tm [(Inc.,)-250(2015.)]TJ
+0 g 0 G
+ -21.579 -23.483 Td [([35])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 289.753 Tm [(Ilya)-264(Sutsk)9(e)25(v)15(er)39(,)-270(Oriol)-264(V)59(in)14(yals)1(,)-270(and)-264(Quoc)-265(VV)-264(Le.)-415(Sequence)-265(to)-264(sequence)-265(learning)-264(with)-265(neural)]TJ 1 0 0 1 129.579 278.844 Tm [(netw)10(orks.)-360(In)]TJ/F218 9.9626 Tf 53.29 0 Td [(Advances)-250(in)-250(Neur)15(al)-250(Information)-250(Pr)45(ocessing)-250(Systems)]TJ/F84 9.9626 Tf 208.874 0 Td [(,)-250(pages)-250(3104\2263112,)-250(2014.)]TJ
+0 g 0 G
+ -283.743 -23.483 Td [([36])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 255.361 Tm [(Christian)-247(Sze)15(gedy)64(,)-247(V)59(incent)-247(V)109(anhouck)10(e,)-247(Ser)17(ge)15(y)-246(Iof)24(f)1(e,)-247(Jonathon)-247(Shlens,)-247(and)-247(Zbignie)25(w)-247(W)79(ojna.)]TJ 1 0 0 1 129.579 244.452 Tm [(Rethinking)-250(the)-250(inception)-250(architecture)-250(for)-250(computer)-250(vision.)]TJ/F218 9.9626 Tf 235.185 0 Td [(CoRR)]TJ/F84 9.9626 Tf 23.801 0 Td [(,)-250(abs/1512.00567,)-250(2015.)]TJ
+0 g 0 G
+ -280.565 -23.483 Td [([37])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 220.969 Tm [(V)59(in)15(yals)-288(&)-287(Kaiser,)-299(K)35(oo,)-298(Petro)14(v)64(,)-298(Sutsk)10(e)24(v)15(er)39(,)-298(and)-287(Hinton.)-489(Grammar)-288(as)-287(a)-288(foreign)-287(language.)-489(In)]TJ/F218 9.9626 Tf 1 0 0 1 128.971 210.06 Tm [(Advances)-250(in)-250(Neur)15(al)-250(Information)-250(Pr)45(ocessing)-250(Systems)]TJ/F84 9.9626 Tf 208.875 0 Td [(,)-250(2015.)]TJ
+0 g 0 G
+ -229.846 -23.483 Td [([38])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 186.577 Tm [(Y)108(onghui)-356(W)49(u,)-384(Mik)9(e)-356(Schuster)40(,)-384(Zhifeng)-357(Chen,)-384(Quoc)-356(V)-356(Le,)-384(Mohammad)-356(Norouzi,)-384(W)78(olfg)5(ang)]TJ 0.98 0 0 1 129.579 175.668 Tm [(Machere)15(y)67(,)-241(Maxim)-237(Krikun,)-241(Y)113(uan)-237(Cao,)-240(Qin)-237(Gao,)-241(Klaus)-237(Machere)15(y)66(,)-240(et)-237(al.)-329(Google')56(s)-237(neural)-237(machine)]TJ 1.01 0 0 1 129.579 164.759 Tm [(translation)-248(system:)-307(Bridging)-248(the)-248(g)5(ap)-247(between)-248(human)-248(and)-248(machine)-247(translation.)]TJ/F218 9.9626 Tf 1.01 0 0 1 446.534 164.759 Tm [(arXiv)-248(pr)37(eprint)]TJ 1 0 0 1 129.579 153.85 Tm [(arXiv:1609.08144)]TJ/F84 9.9626 Tf 72.777 0 Td [(,)-250(2016.)]TJ
+0 g 0 G
+ -94.356 -23.483 Td [([39])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 130.367 Tm [(Jie)-348(Zhou,)-374(Y)54(ing)-348(Cao,)-374(Xuguang)-349(W)79(ang,)-374(Peng)-348(Li,)-374(and)-349(W)79(ei)-348(Xu.)-683(Deep)-348(recurrent)-349(models)-348(with)]TJ 1 0 0 1 129.579 119.458 Tm [(f)10(ast-forw)10(ard)-250(connections)-250(for)-250(neural)-250(machine)-250(translation.)]TJ/F218 9.9626 Tf 227.484 0 Td [(CoRR)]TJ/F84 9.9626 Tf 23.801 0 Td [(,)-250(abs/1606.04199,)-250(2016.)]TJ
+0 g 0 G
+ -272.864 -23.483 Td [([40])]TJ
+0 g 0 G
+ 1.02 0 0 1 129.579 95.975 Tm [(Muhua)-335(Zhu,)-357(Y)109(ue)-335(Zhang,)-357(W)78(enliang)-335(Chen,)-357(Min)-335(Zhang,)-357(and)-335(Jingbo)-335(Zhu.)-640(F)15(ast)-335(and)-335(accurate)]TJ 0.98 0 0 1 129.579 85.066 Tm [(shift-reduce)-246(consti)1(tuent)-246(parsing.)-347(In)]TJ/F218 9.9626 Tf 0.98 0 0 1 268.954 85.066 Tm [(Pr)46(oceedings)-246(of)-245(the)-246(51st)-245(Annual)-246(Meeting)-245(of)-246(the)-246(A)31(CL)-246(\050V)114(olume)]TJ 1 0 0 1 128.832 74.157 Tm [(1:)-310(Long)-250(P)80(aper)10(s\051)]TJ/F84 9.9626 Tf 65.006 0 Td [(,)-250(pages)-250(434\226443.)-250(A)40(CL,)-250(August)-250(2013.)]TJ
+0 g 0 G
+ 107.181 -32.045 Td [(12)]TJ
+0 g 0 G
+ET

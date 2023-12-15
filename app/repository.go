@@ -22,6 +22,7 @@ const (
 	nSearchResults = 3
 )
 
+// unused yet but is helpful when initializing the collection
 func createAdsCollection(ctx context.Context, c client.Client) {
 	schema := entity.NewSchema().
 		WithName(adsCollectionName).WithDescription("Ads Collection").
@@ -71,6 +72,7 @@ func insertAd(
 	}
 }
 
+// unused yet, but is helpful when initializing the collection
 func buildAdsIndex(ctx context.Context, c client.Client) {
 	idx, err := entity.NewIndexIvfFlat(entity.L2, nClusters)
 
@@ -121,6 +123,7 @@ func searchSimilarAds(
 	return sRet[0]
 }
 
+// unused
 func deleteAds(ctx context.Context, c client.Client, ids []int64) {
 	pks := entity.NewColumnInt64(idColumnName, ids)
 	sRet, err := c.QueryByPks(ctx, adsCollectionName, nil, pks, []string{projectColumnName})
@@ -170,6 +173,7 @@ func deleteAds(ctx context.Context, c client.Client, ids []int64) {
 	}
 }
 
+// unused
 func dropAdsCollection(ctx context.Context, c client.Client) {
 	if err := c.DropCollection(ctx, adsCollectionName); err != nil {
 		log.Fatalf("failed to drop collection, err: %v", err)

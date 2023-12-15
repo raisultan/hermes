@@ -58,9 +58,15 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/hello", app.sayHello).Methods("GET")
-	r.HandleFunc("/api/ads/insert", app.insertAdHandler).Methods("POST")
-	r.HandleFunc("/api/ads/search", app.searchSimilarAdsHandler).Methods("POST")
-	r.HandleFunc("/api/ads/delete", app.deleteAdHandler).Methods("DELETE")
+	r.HandleFunc("/api/insert", app.insertHandler).Methods("POST")
+	r.HandleFunc("/api/search", app.searchHandler).Methods("POST")
+	r.HandleFunc("/api/delete", app.deleteHandler).Methods("DELETE")
+
+	text, err := ExtractTextFromPDFVer3("./aem.pdf")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(text)
 
 	http.Handle("/", r)
 	fmt.Println("Server started on :8080")

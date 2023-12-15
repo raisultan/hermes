@@ -1,0 +1,22 @@
+0 g 0 G
+0 g 0 G
+BT
+/F87 11.9552 Tf 108 710.037 Td [(Attention)-250(V)37(isualizations)]TJ
+0 g 0 G
+ET
+1 0 0 1 108 489.94 cm
+q
+1.03578 0 0 1.03578 0 0 cm
+q
+1 0 0 1 0 0 cm
+/Fm1 Do
+Q
+Q
+1 0 0 1 -108 -489.94 cm
+BT
+/F84 9.9626 Tf 1.02 0 0 1 108 472.058 Tm [(Figure)-340(3:)-494(An)-340(e)14(xample)-340(of)-340(the)-340(attention)-340(mechanism)-340(follo)24(wing)-340(long-distance)-340(dependencies)-340(in)-340(the)]TJ 1.002 0 0 1 108 461.148 Tm [(encoder)-249(self-attention)-249(in)-248(layer)-249(5)-249(of)-249(6.)-309(Man)15(y)-249(of)-249(the)-249(attention)-248(heads)-249(attend)-249(to)-249(a)-249(distant)-248(dependenc)15(y)-249(of)]TJ 1.005 0 0 1 108 450.239 Tm [(the)-249(v)14(erb)-249(`making',)-250(completing)-249(the)-249(phrase)-250(`making...more)-249(dif)25(\002cult'.)-311(Attentions)-249(here)-250(sho)25(wn)-249(only)-250(for)]TJ 1 0 0 1 108 439.33 Tm [(the)-250(w)10(ord)-250(`making'.)-310(Dif)25(ferent)-250(colors)-250(represent)-250(dif)25(ferent)-250(heads.)-310(Best)-250(vie)25(wed)-250(in)-250(color)55(.)]TJ
+0 g 0 G
+0 g 0 G
+ 193.019 -397.218 Td [(13)]TJ
+0 g 0 G
+ET

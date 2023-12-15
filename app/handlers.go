@@ -24,7 +24,7 @@ type InsertAdResponse struct {
 	Details string `json:"details"`
 }
 
-func (app *App) insertAdHandler(w http.ResponseWriter, r *http.Request) {
+func (app *App) insertHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var ad InsertAdRequest
 
@@ -70,7 +70,7 @@ type SearchAdResult struct {
 	Distance    float32 `json:"distance"`
 }
 
-func (app *App) searchSimilarAdsHandler(w http.ResponseWriter, r *http.Request) {
+func (app *App) searchHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var ad SearchAdRequest
 
@@ -144,7 +144,7 @@ type DeleteAdResponse struct {
 	Details string `json:"details"`
 }
 
-func (app *App) deleteAdHandler(w http.ResponseWriter, r *http.Request) {
+func (app *App) deleteHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var ad DeleteAdRequest
 
