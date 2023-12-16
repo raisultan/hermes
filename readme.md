@@ -30,6 +30,5 @@ This project presents a robust and scalable solution for semantic search across 
 - [Semantic Search with Retrieve and Rerank](https://huggingface.co/spaces/nickmuchi/semantic-search-with-retrieve-and-rerank/tree/main)
 
 ## Todo
-* API for search
 * Fine-tune semantic search
 * Text normalization
