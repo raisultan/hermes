@@ -1,7 +1,15 @@
+from pydantic import BaseModel
 from pymilvus import Collection
 
 
-def search(collection: Collection, embedding: list[float]) -> list[dict]:
+class SearchResult(BaseModel):
+    path: str
+    page: int
+    text: str
+    distance: float
+
+
+def search(collection: Collection, embedding: list[float]) -> list[SearchResult]:
     collection.load()
     search_params = {'metric_type': 'L2', 'params': {'nprobe': 10}}
     raw_result = collection.search(
@@ -15,10 +23,10 @@ def search(collection: Collection, embedding: list[float]) -> list[dict]:
     for hits in raw_result:
         for hit in hits:
             entity = hit.entity
-            result.append({
-                'path': entity.get('path'),
-                'page': entity.get('page'),
-                'text': entity.get('text'),
-                'distance': hit.distance,
-            })
+            result.append(SearchResult(
+                path=entity.get('path'),
+                page=entity.get('page'),
+                text=entity.get('text'),
+                distance=hit.distance,
+            ))
     return result

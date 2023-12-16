@@ -31,4 +31,5 @@ This project presents a robust and scalable solution for semantic search across 
 
 ## Todo
 * API for search
+* Fine-tune semantic search
 * Text normalization
