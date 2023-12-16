@@ -1,20 +1,6 @@
 from pymilvus import Collection
 
 
-def prepare_record(
-    path: str,
-    page_num: int,
-    text: str,
-    embedding: list[float],
-) -> list:
-    return {'path': path, 'page': page_num, 'text': text, 'embedding': embedding}
-
-
-def insert(collection: Collection, records: list[dict]) -> None:
-    collection.insert(records)
-    collection.flush()
-
-
 def search(collection: Collection, embedding: list[float]) -> list[dict]:
     collection.load()
     search_params = {'metric_type': 'L2', 'params': {'nprobe': 10}}

@@ -1,6 +1,7 @@
-from extract import pdf_extract
-from embed import get_len_safe_embeddings
-from load import prepare_record, insert
+from hermes.extract import pdf_extract
+from hermes.embed import get_len_safe_embeddings
+from hermes.insert import prepare_record, insert
+
 
 def load_pdf_to_db(collection, path: str):
     pages = pdf_extract(path)
@@ -10,6 +11,7 @@ def load_pdf_to_db(collection, path: str):
         embeddings = get_len_safe_embeddings(page.content)
         for embedding in embeddings:
             record = prepare_record(path, page.num, page.content, embedding)
+            print(f'record: {path} - {page.num} - {page.content}\n\n')
             records.append(record)
 
     insert(collection, records)
@@ -20,7 +22,7 @@ def search(text: str):
     from collection import connect_milvus, disconnect_milvus, collection_name, schema
 
     from embed import get_embedding
-    from load import search
+    from search import search
 
     connect_milvus()
     collection = Collection(
@@ -43,6 +45,7 @@ if __name__ == '__main__':
         name=collection_name,
         schema=schema,
     )
-    load_pdf_to_db(collection, './oem.pdf')
+    load_pdf_to_db(collection, './aem.pdf')
     collection.load()
     disconnect_milvus()
+    print('Successfully inserted records from pdf!')

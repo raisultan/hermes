@@ -30,10 +30,5 @@ This project presents a robust and scalable solution for semantic search across 
 - [Semantic Search with Retrieve and Rerank](https://huggingface.co/spaces/nickmuchi/semantic-search-with-retrieve-and-rerank/tree/main)
 
 ## Todo
-* PDF content extractor
-* Text to vector converter
-* Embedding to VDB loader
-
-* If we embed text to DB as bunch of vectors, then we ability to track pages and cite in any way.
-    Better solution here may be is to embed each page as a distinct vector, when putting it to DB we can put that data
-    as a part of a record/metadata, when searching we will know the page number from where similarity is found.
+* API for search
+* Text normalization
