@@ -2,14 +2,17 @@ def insert_pdf_to_db(collection, path: str) -> None:
     from hermes.extract import pdf_extract
     from hermes.embed import get_len_safe_embeddings
     from hermes.insert import prepare_record, insert
+    from hermes.normalize import normalize_pdf
 
     pages = pdf_extract(path)
 
     records = []
     for page in pages:
-        embeddings = get_len_safe_embeddings(page.content)
+        normalized = normalize_pdf(page.content)
+        embeddings = get_len_safe_embeddings(normalized)
+        print(f'--Raw\n{page.content}\n--Normalized\n{normalized}\n\n')
         for embedding in embeddings:
-            record = prepare_record(path, page.num, page.content, embedding)
+            record = prepare_record(path, page.num, normalized, embedding)
             records.append(record)
 
     insert(collection, records)
@@ -28,7 +31,7 @@ if __name__ == '__main__':
     )
 
     start_time = time.time()
-    insert_pdf_to_db(collection, './cem.pdf')
+    insert_pdf_to_db(collection, './oem.pdf')
     collection.load()
     end_time = time.time()
 

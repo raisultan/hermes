@@ -6,6 +6,7 @@ from hermes.embed import get_embedding
 from hermes.search import SearchResult, search
 from hermes.web.setup import get_collection
 from hermes.web.schemas import SearchRequest
+from hermes.normalize import normalize_pdf
 
 app = FastAPI()
 
@@ -15,6 +16,7 @@ def search_handler(
     req: SearchRequest,
     collection: Collection = Depends(get_collection),
 ) -> list[SearchResult]:
-    embedding = get_embedding(req.text)
+    normalized = normalize_pdf(req.text)
+    embedding = get_embedding(normalized)
     results = search(collection, INDEX_CONFIG, embedding)
     return results
