@@ -1,9 +1,8 @@
-from hermes.extract import pdf_extract
-from hermes.embed import get_len_safe_embeddings
-from hermes.insert import prepare_record, insert
+def insert_pdf_to_db(collection, path: str) -> None:
+    from hermes.extract import pdf_extract
+    from hermes.embed import get_len_safe_embeddings
+    from hermes.insert import prepare_record, insert
 
-
-def load_pdf_to_db(collection, path: str):
     pages = pdf_extract(path)
 
     records = []
@@ -16,35 +15,23 @@ def load_pdf_to_db(collection, path: str):
     insert(collection, records)
 
 
-def search(text: str):
-    from pymilvus import Collection
-    from collection import connect_milvus, disconnect_milvus, collection_name, schema
-
-    from embed import get_embedding
-    from search import search
-
-    connect_milvus()
-    collection = Collection(
-        name=collection_name,
-        schema=schema,
-    )
-
-    embedding = get_embedding(text)
-    search_results = search(collection, embedding)
-
-    disconnect_milvus()
-    return search_results
-
-
 if __name__ == '__main__':
+    import time
+
     from pymilvus import Collection
     from collection import connect_milvus, disconnect_milvus, collection_name, schema
+
     connect_milvus()
     collection = Collection(
         name=collection_name,
         schema=schema,
     )
-    load_pdf_to_db(collection, './cem.pdf')
+
+    start_time = time.time()
+    insert_pdf_to_db(collection, './cem.pdf')
     collection.load()
+    end_time = time.time()
+
     disconnect_milvus()
     print('Successfully inserted records from pdf!')
+    print(f'Time elapsed: {end_time - start_time} seconds')
