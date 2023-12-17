@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from pymilvus import Collection, CollectionSchema, FieldSchema, DataType, connections
 
 VECTOR_DIMENSIONS = 1536
@@ -43,11 +45,26 @@ def disconnect_milvus():
     connections.disconnect("default")
 
 
-def build_indexes(collection: Collection) -> None:
+@dataclass(frozen=True)
+class IndexConfig:
+    index_type: str
+    metric_type: str
+    params: dict
+
+
+# https://milvus.io/docs/index.md#HNSW
+INDEX_CONFIG = IndexConfig(
+    index_type="HNSW",
+    metric_type="COSINE",
+    params={"M": 24, "efConstruction": 256},
+)
+
+
+def build_indexes(collection: Collection, idx_cfg: IndexConfig) -> None:
     index = {
-        "index_type": "IVF_FLAT",
-        "metric_type": "L2",
-        "params": {"nlist": 128},
+        "index_type": idx_cfg.index_type,
+        "metric_type": idx_cfg.metric_type,
+        "params": idx_cfg.params,
     }
     collection.create_index("embedding", index)
 
@@ -59,7 +76,7 @@ def create_collection():
         name=collection_name,
         schema=schema,
     )
-    build_indexes(collection)
+    build_indexes(collection, INDEX_CONFIG)
     collection.load()
 
     disconnect_milvus()

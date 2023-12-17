@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends
 from pymilvus import Collection
 
+from hermes.collection import INDEX_CONFIG
 from hermes.embed import get_embedding
 from hermes.search import SearchResult, search
 from hermes.web.setup import get_collection
@@ -15,5 +16,5 @@ def search_handler(
     collection: Collection = Depends(get_collection),
 ) -> list[SearchResult]:
     embedding = get_embedding(req.text)
-    results = search(collection, embedding)
+    results = search(collection, INDEX_CONFIG, embedding)
     return results

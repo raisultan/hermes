@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from pymilvus import Collection
 
+from hermes.collection import IndexConfig
+
 
 class SearchResult(BaseModel):
     path: str
@@ -9,9 +11,9 @@ class SearchResult(BaseModel):
     distance: float
 
 
-def search(collection: Collection, embedding: list[float]) -> list[SearchResult]:
+def search(collection: Collection, idx_cfg: IndexConfig, embedding: list[float]) -> list[SearchResult]:
     collection.load()
-    search_params = {'metric_type': 'L2', 'params': {'nprobe': 10}}
+    search_params = {'metric_type': idx_cfg.metric_type, 'params': idx_cfg.params}
     raw_result = collection.search(
         [embedding],
         'embedding',

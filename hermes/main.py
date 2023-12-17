@@ -11,7 +11,6 @@ def load_pdf_to_db(collection, path: str):
         embeddings = get_len_safe_embeddings(page.content)
         for embedding in embeddings:
             record = prepare_record(path, page.num, page.content, embedding)
-            print(f'record: {path} - {page.num} - {page.content}\n\n')
             records.append(record)
 
     insert(collection, records)
@@ -45,7 +44,7 @@ if __name__ == '__main__':
         name=collection_name,
         schema=schema,
     )
-    load_pdf_to_db(collection, './aem.pdf')
+    load_pdf_to_db(collection, './cem.pdf')
     collection.load()
     disconnect_milvus()
     print('Successfully inserted records from pdf!')
