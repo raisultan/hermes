@@ -10,12 +10,27 @@ def insert_pdf_to_db(collection, path: str) -> None:
     for page in pages:
         normalized = normalize_pdf(page.content)
         embeddings = get_len_safe_embeddings(normalized)
-        print(f'--Raw\n{page.content}\n--Normalized\n{normalized}\n\n')
         for embedding in embeddings:
             record = prepare_record(path, page.num, normalized, embedding)
             records.append(record)
 
     insert(collection, records)
+
+
+def find_pdfs_and_insert_to_db(collection, dir: str) -> None:
+    from hermes.find import pdf_find
+
+    pdf_files = pdf_find(dir)
+    print(f'Found {len(pdf_files)} pdf files: {pdf_files}\n')
+
+    for num, pdf_file in enumerate(pdf_files, start=1):
+        print(f'{num} -- Inserting {pdf_file} to db...')
+        try:
+            insert_pdf_to_db(collection, pdf_file)
+        except Exception as e:
+            print(f'{num} -- Failed to insert {pdf_file} to db: {e}\n')
+        else:
+            print(f'{num} -- Inserted {pdf_file} to db!\n')
 
 
 if __name__ == '__main__':
@@ -31,10 +46,9 @@ if __name__ == '__main__':
     )
 
     start_time = time.time()
-    insert_pdf_to_db(collection, './oem.pdf')
+    find_pdfs_and_insert_to_db(collection, './')
     collection.load()
     end_time = time.time()
 
     disconnect_milvus()
-    print('Successfully inserted records from pdf!')
     print(f'Time elapsed: {end_time - start_time} seconds')

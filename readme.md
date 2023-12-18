@@ -30,6 +30,6 @@ This project presents a robust and scalable solution for semantic search across 
 - [Semantic Search with Retrieve and Rerank](https://huggingface.co/spaces/nickmuchi/semantic-search-with-retrieve-and-rerank/tree/main)
 
 ## Todo
-* Crawler - find pdfs in dir and sub-dirs and load them into DB
 * Extract -> Embed -> Insert pipeline optimization
 * How to evaluate search?
+* Optimize pdf finder
