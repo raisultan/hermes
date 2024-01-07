@@ -12,8 +12,9 @@ openai = "1.4.0"
 pymilvus = "2.3.0"
 tiktoken = "0.5.2"
 fastapi = "0.105.0"
-pydantic = "2.5.2"
+pydantic = "1.10.13"
 uvicorn = "0.24.0.post1"
+rocketry = "2.5.1"
 
 
 [build-system]
