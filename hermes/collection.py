@@ -69,19 +69,11 @@ def build_indexes(collection: Collection, idx_cfg: IndexConfig) -> None:
     collection.create_index("embedding", index)
 
 
-def create_collection():
-    connect_milvus()
-
+def create_collection(name: str) -> Collection:
     collection = Collection(
-        name=collection_name,
+        name=name,
         schema=schema,
     )
     build_indexes(collection, INDEX_CONFIG)
     collection.load()
-
-    disconnect_milvus()
-
-
-if __name__ == "__main__":
-    create_collection()
-    print("Collection created successfully!")
+    return collection
