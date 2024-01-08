@@ -3,7 +3,7 @@ from pymilvus import Collection
 from hermes.extract import pdf_extract
 from hermes.embed import get_len_safe_embeddings
 from hermes.insert import prepare_record, insert
-from hermes.normalize import normalize_pdf
+from hermes.normalize import normalize
 
 
 def insert_pdf_to_db(collection: Collection, path: str) -> None:
@@ -12,7 +12,7 @@ def insert_pdf_to_db(collection: Collection, path: str) -> None:
 
     records = []
     for page in pages:
-        normalized = normalize_pdf(page.content)
+        normalized = normalize(page.content)
         embeddings = get_len_safe_embeddings(normalized)
         for embedding in embeddings:
             record = prepare_record(path, page.num, normalized, embedding)

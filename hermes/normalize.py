@@ -1,7 +1,7 @@
 import re
 
 
-def normalize_pdf(text: str) -> str:
+def normalize(text: str) -> str:
     # Normalize character encoding to UTF-8
     text = text.encode('utf-8', errors='replace').decode('utf-8')
 

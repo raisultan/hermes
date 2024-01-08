@@ -30,6 +30,12 @@ This project presents a robust and scalable solution for semantic search across 
 - [Semantic Search with Retrieve and Rerank](https://huggingface.co/spaces/nickmuchi/semantic-search-with-retrieve-and-rerank/tree/main)
 
 ## Todo
-* Extract -> Embed -> Insert pipeline optimization
-* How to evaluate search?
-* Optimize pdf finder
+* Better logging
+* Cleanup after crawl, in case of some pdfs are removed
+* Smart Crawler - monitors list of pdfs, triggers new insert only if new files added, adds only new files
+* Readme
+
+## Expected
+* Run the app with providing path to folder where pdfs are located
+* Finder periodically checks new pdfs and uploads them into Vector DB
+* App provides API to search those PDFs and cites sources

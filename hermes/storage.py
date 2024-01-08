@@ -11,7 +11,7 @@ def write_collection_name(conn, data, table_name: str = 'collection'):
     The table will always contain only one row."""
     cursor = conn.cursor()
     cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (data TEXT)")
-    cursor.execute(f"DELETE FROM {table_name}")  # Clear existing data
+    cursor.execute(f"DELETE FROM {table_name}")
     cursor.execute(f"INSERT INTO {table_name} (data) VALUES (?)", (data,))
     conn.commit()
 
