@@ -1,8 +1,7 @@
 from datetime import datetime
 
 from rocketry import Rocketry
-from rocketry.conds import every
-from rocketry.args import CliArg
+from rocketry.args import CliArg, Task
 
 from hermes.collection import connect_milvus, create_collection, disconnect_milvus
 from hermes.crawler.logger import logger
@@ -29,8 +28,11 @@ def on_shutdown():
         disconnect_from_db(db_conn)
     disconnect_milvus()
 
+@app.cond()
+def done(task = Task()):
+    return task.status != 'run'
 
-@app.task(every('5 seconds'))
+@app.task(done)
 def create_find_extract_embed_insert(dir_path: str = cli_dir_path):
     """Creates collection, finds pdfs, extracts text, embeds and inserts into db."""
     pdf_files = pdf_find(dir_path)
