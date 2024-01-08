@@ -1,5 +1,6 @@
 from pymilvus import Collection
 
+from hermes.crawler.logger import logger
 from hermes.extract import pdf_extract
 from hermes.embed import get_len_safe_embeddings
 from hermes.insert import prepare_record, insert
@@ -25,10 +26,10 @@ def insert_pdfs_to_db(collection, pdf_files: list[str]) -> None:
     """Inserts PDFs to the database."""
 
     for num, pdf_file in enumerate(pdf_files, start=1):
-        print(f'{num} -- Inserting {pdf_file} to db...')
+        logger.info(f'{num} -- Inserting {pdf_file} to db...')
         try:
             insert_pdf_to_db(collection, pdf_file)
         except Exception as e:
-            print(f'{num} -- Failed to insert {pdf_file} to db: {e}\n')
+            logger.error(f'{num} -- Failed to insert {pdf_file} to db: {e}\n')
         else:
-            print(f'{num} -- Inserted {pdf_file} to db!\n')
+            logger.info(f'{num} -- Inserted {pdf_file} to db!\n')

@@ -1,8 +1,8 @@
 import sqlite3
 
+
 def connect_to_db(db_file: str = 'storage.sqlite'):
     """Connect to the SQLite database specified by db_file."""
-    print(f"Connecting to database: {db_file}")
     conn = sqlite3.connect(db_file)
     return conn
 
@@ -24,5 +24,4 @@ def read_collection_name(conn, table_name: str = 'collection'):
 
 def disconnect_from_db(conn):
     """Disconnect from the database."""
-    print("Disconnecting from database...")
     conn.close()

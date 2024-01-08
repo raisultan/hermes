@@ -9,3 +9,4 @@ dumps/
 *.pdf
 app/out/
 __pycache__/
+*.sqlite
