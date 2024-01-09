@@ -13,3 +13,8 @@ def prepare_record(
 def insert(collection: Collection, records: list[dict]) -> None:
     collection.insert(records)
     collection.flush()
+
+def delete_by_paths(collection: Collection, paths: list[str]) -> None:
+    expr = f'path in [{", ".join(map(repr, paths))}]'
+    collection.delete(expr)
+    collection.flush()

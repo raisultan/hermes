@@ -69,6 +69,10 @@ def build_indexes(collection: Collection, idx_cfg: IndexConfig) -> None:
     collection.create_index("embedding", index)
 
 
+def get_collection(collection_name: str) -> Collection:
+    return Collection(name=collection_name)
+
+
 def create_collection(name: str) -> Collection:
     collection = Collection(
         name=name,

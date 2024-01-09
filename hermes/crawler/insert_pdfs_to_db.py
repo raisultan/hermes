@@ -3,7 +3,7 @@ from pymilvus import Collection
 from hermes.crawler.logger import logger
 from hermes.extract import pdf_extract
 from hermes.embed import get_len_safe_embeddings
-from hermes.insert import prepare_record, insert
+from hermes.vector_db import prepare_record, insert
 from hermes.normalize import normalize
 
 
@@ -30,6 +30,6 @@ def insert_pdfs_to_db(collection, pdf_files: list[str]) -> None:
         try:
             insert_pdf_to_db(collection, pdf_file)
         except Exception as e:
-            logger.error(f'{num} -- Failed to insert {pdf_file} to db: {e}\n')
+            logger.error(f'{num} -- Failed to insert {pdf_file} to db: {repr(e)}\n')
         else:
             logger.info(f'{num} -- Inserted {pdf_file} to db!\n')

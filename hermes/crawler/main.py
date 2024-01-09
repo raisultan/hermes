@@ -1,13 +1,23 @@
 from datetime import datetime
 
+from pymilvus import Collection
 from rocketry import Rocketry
 from rocketry.args import CliArg, Task
 
-from hermes.collection import connect_milvus, create_collection, disconnect_milvus
+from hermes.collection import connect_milvus, create_collection, disconnect_milvus, get_collection
 from hermes.crawler.logger import logger
 from hermes.crawler.insert_pdfs_to_db import insert_pdfs_to_db
+from hermes.crawler.track_changes import track_changes
 from hermes.find import pdf_find
-from hermes.storage import connect_to_db, write_collection_name, disconnect_from_db
+from hermes.storage import (
+    connect_to_db,
+    read_pdf_paths,
+    read_collection_name,
+    write_collection_name,
+    write_pdf_paths,
+    disconnect_from_db,
+)
+from hermes.vector_db import delete_by_paths
 
 app = Rocketry()
 cli_dir_path = CliArg('--path')
@@ -28,25 +38,59 @@ def on_shutdown():
         disconnect_from_db(db_conn)
     disconnect_milvus()
 
+
 @app.cond()
 def done(task = Task()):
     return task.status != 'run'
 
-@app.task(done)
-def create_find_extract_embed_insert(dir_path: str = cli_dir_path):
-    """Creates collection, finds pdfs, extracts text, embeds and inserts into db."""
-    pdf_files = pdf_find(dir_path)
-    logger.info(f'Found {pdf_files} pdf files in {dir_path}.')
 
+def create_new_collection() -> Collection:
     collection_name = datetime.now().strftime("docs_%Y_%m_%d_%H_%M_%S")
-
     logger.info(f'Creating collection {collection_name}...')
     collection = create_collection(collection_name)
 
-    logger.info(f'Inserting pdf files to vector db...')
-    insert_pdfs_to_db(collection, pdf_files)
     logger.info('Writing collection name to db...')
     write_collection_name(db_conn, collection_name)
+    return collection
+
+
+@app.task(done)
+def create_find_extract_embed_insert(dir_path: str = cli_dir_path):
+    """Creates collection, finds pdfs, extracts text, embeds and inserts into db."""
+    new_pdf_paths = pdf_find(dir_path)
+    logger.info(f'Found {new_pdf_paths} pdf files in {dir_path}.')
+
+    try:
+        prev_pdf_paths = read_pdf_paths(db_conn)
+    except Exception as e:
+        logger.error(f'Failed to read pdf paths from db: {repr(e)}.')
+        prev_pdf_paths = []
+
+    changes = track_changes(prev_pdf_paths, new_pdf_paths)
+    if not changes.is_changed:
+        logger.info('No changes detected.')
+        return None
+
+    logger.info(f'Changes: {changes}.')
+    try:
+        collection_name = read_collection_name(db_conn)
+        collection = get_collection(collection_name)
+    except Exception as e:
+        logger.error(f'Failed to load collection: {repr(e)}.')
+        collection = create_new_collection()
+        collection_name = collection.name
+
+    if changes.deleted:
+        logger.info(f'Deleting {changes.deleted} from vector db...')
+        delete_by_paths(collection, changes.deleted)
+
+    if changes.added:
+        collection = get_collection(collection_name)
+        logger.info(f'Adding {changes.added} to vector db...')
+        insert_pdfs_to_db(collection, changes.added)
+
+    logger.info(f'Writing pdf paths to db...')
+    write_pdf_paths(db_conn, new_pdf_paths)
 
 
 if __name__ == '__main__':

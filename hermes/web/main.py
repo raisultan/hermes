@@ -1,9 +1,8 @@
 from sqlite3 import Connection
 
 from fastapi import FastAPI, Depends
-from pymilvus import Collection
 
-from hermes.collection import INDEX_CONFIG, schema
+from hermes.collection import INDEX_CONFIG, get_collection
 from hermes.embed import get_embedding
 from hermes.search import SearchResult, search
 from hermes.storage import read_collection_name
@@ -21,10 +20,8 @@ def search_handler(
     db_conn: Connection = Depends(get_db_connection),
 ) -> list[SearchResult]:
     collection_name = read_collection_name(db_conn)
-    collection = Collection(
-        name=collection_name,
-        schema=schema,
-    )
+    collection = get_collection(collection_name)
+
     normalized_txt = normalize(req.text)
     embedding = get_embedding(normalized_txt)
     results = search(collection, INDEX_CONFIG, embedding)
