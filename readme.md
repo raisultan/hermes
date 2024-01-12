@@ -1,4 +1,4 @@
-## Semantic Document Search System
+## Hermes -- Semantic Document Search System
 
 ### Overview
 This project presents a robust and scalable solution for semantic search across a corpus of PDF documents given in a local folder and subfolders. Utilizing the power of Milvus, a vector database, it offers an efficient way to find relevant documents based on the semantic content of the queries. The system is designed with a focus on modularity and ease of extensibility to accommodate future enhancements.
@@ -30,9 +30,7 @@ This project presents a robust and scalable solution for semantic search across 
 - [Semantic Search with Retrieve and Rerank](https://huggingface.co/spaces/nickmuchi/semantic-search-with-retrieve-and-rerank/tree/main)
 
 ## Todo
-* Better logging
-* Cleanup after crawl, in case of some pdfs are removed
-* Smart Crawler - monitors list of pdfs, triggers new insert only if new files added, adds only new files
+* Frontend
 * Readme
 
 ## Expected
