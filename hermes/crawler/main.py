@@ -2,6 +2,7 @@ from datetime import datetime
 
 from pymilvus import Collection
 from rocketry import Rocketry
+from rocketry.conds import every, daily
 from rocketry.args import CliArg, Task
 
 from hermes.collection import connect_milvus, create_collection, disconnect_milvus, get_collection
@@ -54,7 +55,16 @@ def create_new_collection() -> Collection:
     return collection
 
 
-@app.task(done)
+@app.task(daily)
+def compact_collection():
+    """Compacts collection."""
+    collection_name = read_collection_name(db_conn)
+    collection = get_collection(collection_name)
+    collection.load()
+    collection.compact()
+
+
+@app.task(done & every('1 minute'))
 def create_find_extract_embed_insert(dir_path: str = cli_dir_path):
     """Creates collection, finds pdfs, extracts text, embeds and inserts into db."""
     new_pdf_paths = pdf_find(dir_path)
@@ -78,14 +88,12 @@ def create_find_extract_embed_insert(dir_path: str = cli_dir_path):
     except Exception as e:
         logger.error(f'Failed to load collection: {repr(e)}.')
         collection = create_new_collection()
-        collection_name = collection.name
 
     if changes.deleted:
         logger.info(f'Deleting {changes.deleted} from vector db...')
         delete_by_paths(collection, changes.deleted)
 
     if changes.added:
-        collection = get_collection(collection_name)
         logger.info(f'Adding {changes.added} to vector db...')
         insert_pdfs_to_db(collection, changes.added)
 

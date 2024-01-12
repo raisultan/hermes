@@ -30,6 +30,6 @@ def insert_pdfs_to_db(collection, pdf_files: list[str]) -> None:
         try:
             insert_pdf_to_db(collection, pdf_file)
         except Exception as e:
-            logger.error(f'{num} -- Failed to insert {pdf_file} to db: {repr(e)}\n')
+            logger.error(f'{num} -- Failed to insert {pdf_file} to db: {repr(e)}')
         else:
-            logger.info(f'{num} -- Inserted {pdf_file} to db!\n')
+            logger.info(f'{num} -- Inserted {pdf_file} to db!')
