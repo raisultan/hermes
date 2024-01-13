@@ -3,7 +3,7 @@ from datetime import datetime
 from pymilvus import Collection
 from rocketry import Rocketry
 from rocketry.conds import every, daily
-from rocketry.args import CliArg, Task
+from rocketry.args import Task
 
 from hermes.collection import connect_milvus, create_collection, disconnect_milvus, get_collection
 from hermes.crawler.logger import logger
@@ -12,6 +12,7 @@ from hermes.crawler.track_changes import track_changes
 from hermes.find import pdf_find
 from hermes.storage import (
     connect_to_db,
+    read_dir_path,
     read_pdf_paths,
     read_collection_name,
     write_collection_name,
@@ -21,7 +22,6 @@ from hermes.storage import (
 from hermes.vector_db import delete_by_paths
 
 app = Rocketry()
-cli_dir_path = CliArg('--path')
 db_conn = None
 
 
@@ -65,8 +65,17 @@ def compact_collection():
 
 
 @app.task(done & every('1 minute'))
-def create_find_extract_embed_insert(dir_path: str = cli_dir_path):
+def create_find_extract_embed_insert():
     """Creates collection, finds pdfs, extracts text, embeds and inserts into db."""
+    try:
+        dir_path = read_dir_path(db_conn)
+    except Exception as e:
+        logger.error(f'Failed to read dir path from db: {repr(e)}.')
+        return None
+    if not dir_path:
+        logger.info('No dir path found in db.')
+        return None
+
     new_pdf_paths = pdf_find(dir_path)
     logger.info(f'Found {new_pdf_paths} pdf files in {dir_path}.')
 

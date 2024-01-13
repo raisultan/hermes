@@ -44,6 +44,23 @@ def read_pdf_paths(conn, table_name: str = 'pdf_paths'):
     return json.loads(row[0]) if row else []
 
 
+def write_dir_path(conn, dir_path: str, table_name: str = 'dir_path'):
+    """Write directory path to a table. Create the table if it doesn't exist."""
+    cursor = conn.cursor()
+    cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (data TEXT)")
+    cursor.execute(f"DELETE FROM {table_name}")
+    cursor.execute(f"INSERT INTO {table_name} (data) VALUES (?)", (dir_path,))
+    conn.commit()
+
+
+def read_dir_path(conn, table_name: str = 'dir_path'):
+    """Read and return the row from the table."""
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT data FROM {table_name}")
+    row = cursor.fetchone()
+    return row[0] if row else None
+
+
 def disconnect_from_db(conn):
     """Disconnect from the database."""
     conn.close()
