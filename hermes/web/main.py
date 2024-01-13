@@ -1,6 +1,6 @@
-from sqlite3 import Connection
+from sqlite3 import Connection, OperationalError
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Response
 
 from hermes.collection import INDEX_CONFIG, get_collection
 from hermes.embed import get_embedding
@@ -19,6 +19,7 @@ def search_handler(
     _: None = Depends(get_milvus_connection),
     db_conn: Connection = Depends(get_db_connection),
 ) -> list[SearchResult]:
+    """Searches for documents in the collection."""
     collection_name = read_collection_name(db_conn)
     collection = get_collection(collection_name)
 
@@ -33,6 +34,7 @@ def search_handler(
     req: DirPathRequest,
     db_conn: Connection = Depends(get_db_connection),
 ) -> dict:
+    """Sets dir path."""
     write_dir_path(db_conn, req.dir_path)
     return {'status': 'ok'}
 
@@ -41,5 +43,11 @@ def search_handler(
 def search_handler(
     db_conn: Connection = Depends(get_db_connection),
 ) -> DirPathResponse:
-    dir_path = read_dir_path(db_conn)
+    """Returns dir path.
+    204 status code is returned if dir path is not set.
+    """
+    try:
+        dir_path = read_dir_path(db_conn)
+    except OperationalError:
+        return Response(status_code=204)
     return DirPathResponse(dir_path=dir_path)
