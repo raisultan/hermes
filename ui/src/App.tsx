@@ -51,6 +51,12 @@ const App: React.FC = () => {
     setSearchQuery(event.target.value);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   const handleSearch = async () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/search', { text: searchQuery });
@@ -72,15 +78,16 @@ const App: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
+            onKeyPress={handleKeyPress}
             placeholder="Search PDFs..."
           />
           <button onClick={handleSearch}>Search</button>
-          <div>
+          <div style={{ marginTop: '20px' }}>
             {searchResults.map((result, index) => (
-              <div key={index}>
-                <div>Path: {result.path}</div>
-                <div>Page: {result.page}</div>
-                <div>Text: {result.text}</div>
+              <div key={index} style={{ marginBottom: '10px', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}>
+                <strong>Path:</strong> {result.path}<br />
+                <strong>Page:</strong> {result.page}<br />
+                <strong>Text:</strong> {result.text}<br />
               </div>
             ))}
           </div>
