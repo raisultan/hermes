@@ -5,6 +5,9 @@ const App: React.FC = () => {
   const [dirPath, setDirPath] = useState<string | null>(null);
   const [inputDirPath, setInputDirPath] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<
+    { path: string; page: number; text: string; distance?: number }[]
+  >([]);
   const [isPathSet, setIsPathSet] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -48,6 +51,15 @@ const App: React.FC = () => {
     setSearchQuery(event.target.value);
   };
 
+  const handleSearch = async () => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/search', { text: searchQuery });
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error('Error during search', error);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -62,7 +74,16 @@ const App: React.FC = () => {
             onChange={handleSearchChange}
             placeholder="Search PDFs..."
           />
-          <button>Search</button>
+          <button onClick={handleSearch}>Search</button>
+          <div>
+            {searchResults.map((result, index) => (
+              <div key={index}>
+                <div>Path: {result.path}</div>
+                <div>Page: {result.page}</div>
+                <div>Text: {result.text}</div>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <div>
