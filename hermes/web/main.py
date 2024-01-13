@@ -1,6 +1,7 @@
 from sqlite3 import Connection, OperationalError
 
 from fastapi import FastAPI, Depends, Response
+from fastapi.middleware.cors import CORSMiddleware
 
 from hermes.collection import INDEX_CONFIG, get_collection
 from hermes.embed import get_embedding
@@ -11,6 +12,13 @@ from hermes.web.schemas import DirPathRequest, DirPathResponse, SearchRequest
 from hermes.normalize import normalize
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post('/api/search')
