@@ -38,7 +38,7 @@ def search_handler(
 
 
 @app.post('/api/dir_path')
-def search_handler(
+def set_dir_path_handler(
     req: DirPathRequest,
     db_conn: Connection = Depends(get_db_connection),
 ) -> dict:
@@ -48,7 +48,7 @@ def search_handler(
 
 
 @app.get('/api/dir_path')
-def search_handler(
+def get_dir_path_handler(
     db_conn: Connection = Depends(get_db_connection),
 ) -> DirPathResponse:
     """Returns dir path.

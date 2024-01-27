@@ -3,3 +3,7 @@ run-web:
 
 run-crawler:
 	python3 hermes/crawler/main.py --path ./
+
+clear-dbs:
+	rm -rf storage.sqlite
+	rm -rf volumes/

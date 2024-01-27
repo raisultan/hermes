@@ -108,6 +108,7 @@ def create_find_extract_embed_insert():
 
     logger.info(f'Writing pdf paths to db...')
     write_pdf_paths(db_conn, new_pdf_paths)
+    logger.info(f'Done working!')
 
 
 if __name__ == '__main__':
