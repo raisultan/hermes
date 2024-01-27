@@ -30,10 +30,10 @@ This project presents a robust and scalable solution for semantic search across 
 - [Semantic Search with Retrieve and Rerank](https://huggingface.co/spaces/nickmuchi/semantic-search-with-retrieve-and-rerank/tree/main)
 
 ## Todo
-* Frontend
 * Readme
+* Make faster pdf ingestion
 
-## Expected
+## Use
 * Run the app with providing path to folder where pdfs are located
 * Finder periodically checks new pdfs and uploads them into Vector DB
 * App provides API to search those PDFs and cites sources
