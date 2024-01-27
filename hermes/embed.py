@@ -1,21 +1,27 @@
+import os
 from itertools import islice
 
 import tiktoken
 import numpy as np
 from openai import OpenAI
+from dotenv import load_dotenv
 
 EMBEDDING_MODEL = 'text-embedding-ada-002'
 EMBEDDING_CTX_LENGTH = 8191  # a.k.a. CHUNK_SIZE, CHUNK_LENGTH, MAX_TOKENS
 EMBEDDING_ENCODING = 'cl100k_base'
 
-client = OpenAI(api_key="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")
+
+load_dotenv(override=True)
+
+api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=api_key)
 
 
 def get_embedding(text: str, model: str = EMBEDDING_MODEL) -> list[float]:
     return client.embeddings.create(input=text, model=model).data[0].embedding
 
 
-# Below code copied from here: https://cookbook.openai.com/examples/embedding_long_inputs
+# Copied from: https://cookbook.openai.com/examples/embedding_long_inputs
 def batched(iterable, n):
     """Batch data into tuples of length n. The last batch may be shorter."""
     # batched('ABCDEFG', 3) --> ABC DEF G

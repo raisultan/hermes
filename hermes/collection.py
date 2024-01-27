@@ -79,5 +79,4 @@ def create_collection(name: str) -> Collection:
         schema=schema,
     )
     build_indexes(collection, INDEX_CONFIG)
-    collection.load()
     return collection
