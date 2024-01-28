@@ -29,6 +29,13 @@ This project presents a robust and scalable solution for semantic search across 
 - [Search In PDF Doc - Full Stack App](https://medium.com/@dbabbs/guide-create-a-full-stack-semantic-search-web-app-with-custom-documents-edeae2b35b3c)
 - [Semantic Search with Retrieve and Rerank](https://huggingface.co/spaces/nickmuchi/semantic-search-with-retrieve-and-rerank/tree/main)
 
+## Making it faster
+Input: 2 pdfs with < 30 pages
+1 - Straight forward approach of inserting pdfs consequently takes - 79s
+2 - Making the worker and the function async - 79s
+3 - Async with asyncio.gather - 79s
+4 - Each pdf in its own process using concurrent.futures.ProcessPoolExecutor - 96s
+
 ## Todo
 * Readme
 * Make faster pdf ingestion

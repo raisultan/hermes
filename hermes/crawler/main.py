@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 
 from pymilvus import Collection
@@ -21,19 +22,19 @@ from hermes.storage import (
 )
 from hermes.vector_db import delete_by_paths
 
-app = Rocketry()
+app = Rocketry(execution='async')
 db_conn = None
 
 
 @app.task(on_startup=True)
-def on_startup():
+async def on_startup():
     global db_conn
     db_conn = connect_to_db()
     connect_milvus()
 
 
 @app.task(on_shutdown=True)
-def on_shutdown():
+async def on_shutdown():
     global db_conn
     if db_conn:
         disconnect_from_db(db_conn)
@@ -56,7 +57,7 @@ def create_new_collection() -> Collection:
 
 
 @app.task(daily)
-def compact_collection():
+async def compact_collection():
     """Compacts collection."""
     collection_name = read_collection_name(db_conn)
     collection = get_collection(collection_name)
@@ -65,7 +66,7 @@ def compact_collection():
 
 
 @app.task(done & every('1 minute'))
-def create_find_extract_embed_insert():
+async def create_find_extract_embed_insert():
     """Creates collection, finds pdfs, extracts text, embeds and inserts into db."""
     try:
         dir_path = read_dir_path(db_conn)
@@ -104,12 +105,17 @@ def create_find_extract_embed_insert():
 
     if changes.added:
         logger.info(f'Adding {changes.added} to vector db...')
-        insert_pdfs_to_db(collection, changes.added)
+        await insert_pdfs_to_db(collection, changes.added)
 
     logger.info(f'Writing pdf paths to db...')
     write_pdf_paths(db_conn, new_pdf_paths)
     logger.info(f'Done working!')
 
 
+async def main():
+    rocketry_task = asyncio.create_task(app.serve())
+    await rocketry_task
+
+
 if __name__ == '__main__':
-    app.run()
+    asyncio.run(main())
