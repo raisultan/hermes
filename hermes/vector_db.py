@@ -6,7 +6,7 @@ def prepare_record(
     page_num: int,
     text: str,
     embedding: list[float],
-) -> list:
+) -> list[dict]:
     return {'path': path, 'page': page_num, 'text': text, 'embedding': embedding}
 
 

@@ -7,6 +7,7 @@ import pypdfium2 as pdfium
 class PDFPage:
     num: int
     content: str
+    path: str
 
 
 def pdf_extract(path: str) -> list[PDFPage]:
@@ -14,5 +15,5 @@ def pdf_extract(path: str) -> list[PDFPage]:
     pages = []
     for num, page in enumerate(pdf, start=1):
         content = page.get_textpage().get_text_range()
-        pages.append(PDFPage(num, content))
+        pages.append(PDFPage(num, content, path))
     return pages

@@ -1,10 +1,12 @@
+import asyncio
 import os
 from itertools import islice
 
 import tiktoken
-import numpy as np
-from openai import OpenAI
+from openai import AsyncOpenAI as OpenAI
 from dotenv import load_dotenv
+
+from hermes.crawler.logger import logger
 
 EMBEDDING_MODEL = 'text-embedding-ada-002'
 EMBEDDING_CTX_LENGTH = 8191  # a.k.a. CHUNK_SIZE, CHUNK_LENGTH, MAX_TOKENS
@@ -17,8 +19,9 @@ api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=api_key)
 
 
-def get_embedding(text: str, model: str = EMBEDDING_MODEL) -> list[float]:
-    return client.embeddings.create(input=text, model=model).data[0].embedding
+async def get_embedding(text: str, model: str = EMBEDDING_MODEL) -> list[float]:
+    response = await client.embeddings.create(input=text, model=model)
+    return response.data[0].embedding
 
 
 # Copied from: https://cookbook.openai.com/examples/embedding_long_inputs
@@ -39,22 +42,21 @@ def chunked_tokens(text, encoding_name, chunk_length):
     yield from chunks_iterator
 
 
-def get_len_safe_embeddings(
-        text: str,
-        model: str = EMBEDDING_MODEL,
-        max_tokens: str = EMBEDDING_CTX_LENGTH,
-        encoding_name: str = EMBEDDING_ENCODING,
-        average: bool = False,
-    ):
-    chunk_embeddings = []
-    chunk_lens = []
-    for chunk in chunked_tokens(text, encoding_name=encoding_name, chunk_length=max_tokens):
-        embedding = get_embedding(chunk, model)
-        chunk_embeddings.append(embedding)
-        chunk_lens.append(len(chunk))
+async def get_len_safe_embeddings(
+    text: str,
+    model: str = EMBEDDING_MODEL,
+    max_tokens: str = EMBEDDING_CTX_LENGTH,
+    encoding_name: str = EMBEDDING_ENCODING,
+) -> list[list[float]]:
+    embeddings = []
 
-    if average:
-        chunk_embeddings = np.average(chunk_embeddings, axis=0, weights=chunk_lens)
-        chunk_embeddings = chunk_embeddings / np.linalg.norm(chunk_embeddings)  # normalizes length to 1
-        chunk_embeddings = chunk_embeddings.tolist()
-    return chunk_embeddings
+    chunks = [chunk for chunk in chunked_tokens(text, encoding_name=encoding_name, chunk_length=max_tokens)]
+    tasks = [get_embedding(chunk, model) for chunk in chunks]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    for result in results:
+        if isinstance(result, Exception):
+            logger.error(f'Error getting embedding: {repr(result)}')
+        else:
+            embeddings.append(result)
+
+    return embeddings
