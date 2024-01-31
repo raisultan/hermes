@@ -1,4 +1,6 @@
-# Hermes (Semantic Document Search System)
+# Hermes (Semantic Document Search)
+
+![hermes](hermes.jpg)
 
 ## Overview
 Hermes is specifically designed to facilitate the efficient and effective search of documents within a specified folder and its subfolders. At its core, the system boasts a user-friendly and straightforward API, making it accessible for users to search and retrieve information seamlessly. One of the standout features of Hermes is its ability to not only identify relevant documents but also cite the specific sources, pinpointing the exact page number and presenting the associated content. This feature enhances the user's experience by providing detailed and precise search results. Furthermore, the system is optimized for speed and smooth operation, ensuring that searches through extensive collections of PDF documents are conducted swiftly and results are delivered promptly. The combination of these features makes Hermes an ideal solution for those seeking a local document search system that is both efficient and thorough.
