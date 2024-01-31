@@ -12,6 +12,7 @@ class SearchResult(BaseModel):
 
 
 def search(collection: Collection, idx_cfg: IndexConfig, embedding: list[float]) -> list[SearchResult]:
+    """Search for the nearest neighbors of the given embedding."""
     collection.load()
     search_params = {'metric_type': idx_cfg.metric_type, 'params': idx_cfg.params}
     raw_result = collection.search(

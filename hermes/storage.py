@@ -1,3 +1,5 @@
+"""Repository for the SQLite database operations."""
+
 import sqlite3
 import json
 

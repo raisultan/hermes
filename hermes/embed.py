@@ -1,6 +1,9 @@
+"""Everything needed to make an embedding."""
+
 import asyncio
 import os
 from itertools import islice
+from typing import Generator, Iterable
 
 import tiktoken
 from openai import AsyncOpenAI as OpenAI
@@ -20,12 +23,13 @@ client = OpenAI(api_key=api_key)
 
 
 async def get_embedding(text: str, model: str = EMBEDDING_MODEL) -> list[float]:
+    """Get the embedding for the given text."""
     response = await client.embeddings.create(input=text, model=model)
     return response.data[0].embedding
 
 
 # Copied from: https://cookbook.openai.com/examples/embedding_long_inputs
-def batched(iterable, n):
+def batched(iterable: Iterable, n: int) -> Generator[tuple]:
     """Batch data into tuples of length n. The last batch may be shorter."""
     # batched('ABCDEFG', 3) --> ABC DEF G
     if n < 1:
@@ -35,7 +39,8 @@ def batched(iterable, n):
         yield batch
 
 
-def chunked_tokens(text, encoding_name, chunk_length):
+def chunked_tokens(text: str, encoding_name: str, chunk_length: int) -> Generator[list[str]]:
+    """Chunk text into tokens of length chunk_length."""
     encoding = tiktoken.get_encoding(encoding_name)
     tokens = encoding.encode(text)
     chunks_iterator = batched(tokens, chunk_length)
@@ -48,6 +53,7 @@ async def get_len_safe_embeddings(
     max_tokens: str = EMBEDDING_CTX_LENGTH,
     encoding_name: str = EMBEDDING_ENCODING,
 ) -> list[list[float]]:
+    """Get the embeddings for the given text, chunked into safe lengths."""
     embeddings = []
 
     chunks = [chunk for chunk in chunked_tokens(text, encoding_name=encoding_name, chunk_length=max_tokens)]

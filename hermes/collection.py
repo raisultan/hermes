@@ -1,3 +1,5 @@
+"""Module defines collection, index config and a function to create it."""
+
 from dataclasses import dataclass
 
 from pymilvus import Collection, CollectionSchema, FieldSchema, DataType, connections
@@ -41,7 +43,7 @@ def connect_milvus():
     )
 
 
-def disconnect_milvus():
+def disconnect_milvus() -> None:
     connections.disconnect("default")
 
 

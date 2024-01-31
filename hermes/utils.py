@@ -1,6 +1,8 @@
 import time
+from typing import Callable, Coroutine
 
-def track_time(func):
+
+def track_time(func: Callable) -> Callable:
     def wrapper(*args, **kwargs):
         start_time = time.perf_counter()
         result = func(*args, **kwargs)
@@ -10,7 +12,7 @@ def track_time(func):
     return wrapper
 
 
-def async_track_time(func):
+def async_track_time(func: Coroutine) -> Coroutine:
     async def wrapper(*args, **kwargs):
         start_time = time.perf_counter()
         result = await func(*args, **kwargs)

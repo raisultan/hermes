@@ -2,6 +2,7 @@ import os
 
 
 def pdf_find(dir: str) -> list[str]:
+    """Find all PDF files in the given directory and subdirectories."""
     pdf_files = []
     for root, _, files in os.walk(dir):
         for file in files:

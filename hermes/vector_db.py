@@ -1,3 +1,5 @@
+"""Repository for vector database operations."""
+
 from pymilvus import Collection
 
 
