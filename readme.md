@@ -1,4 +1,4 @@
-# Hermes (Semantic Document Search)
+## Hermes - Semantic Document Search
 
 ![hermes](hermes.jpg)
 
@@ -6,45 +6,29 @@
 Hermes is specifically designed to facilitate the efficient and effective search of documents within a specified folder and its subfolders. At its core, the system boasts a user-friendly and straightforward API, making it accessible for users to search and retrieve information seamlessly. One of the standout features of Hermes is its ability to not only identify relevant documents but also cite the specific sources, pinpointing the exact page number and presenting the associated content. This feature enhances the user's experience by providing detailed and precise search results. Furthermore, the system is optimized for speed and smooth operation, ensuring that searches through extensive collections of PDF documents are conducted swiftly and results are delivered promptly. The combination of these features makes Hermes an ideal solution for those seeking a local document search system that is both efficient and thorough.
 
 ## Components
-1. **Document Processing Component**
-    - **Purpose:** To handle the extraction and preprocessing of text from PDF documents.
-    - **Sub-Components:**
-        - **PDF Text Extractor:** Extracts raw text from PDF files.
-        - **Text Preprocessor:** Cleans and normalizes the extracted text.
-2. **Embedding Component**
-    - **Purpose:** To convert preprocessed text into vector representations using an NLP model.
-    - **Sub-Components:**
-        - **Embedding Model Loader:** Loads the selected NLP model.
-        - **Vectorizer:** Converts text into embeddings using the model.
-3. **Database Integration Component**
-    - **Purpose:** To manage interactions with the Milvus database.
-    - **Sub-Components:**
-        - **Database Connector:** Establishes connection and manages interactions with Milvus.
-        - **Data Ingestor:** Handles the ingestion of document embeddings into the database.
-4. **API Component**
-    - **Purpose:** To provide interfaces for adding new documents and performing semantic searches.
-    - **Sub-Components:**
-        - **Document Ingestion API:** Allows for adding new documents to the system.
-        - **Search API:** Enables semantic search over the embedded documents.
+1. **API:** provides an interface search PDFs and to set directory path in which PDFs are located
+2. **Crawler:** periodically checks and ingests PDFs into Vector DB if there are any changes in dir itself or in sub-dirs
 
-## How to use
-1. Run Milvus Vector database
+## Use
+1. Run Milvus Vector DB
 ```bash
 docker compose -f milvus-docker-compose.yaml up -d
 ```
-2. Run API to handle search and setting path to your PDFs directory
+2. Run the API component
 ```bash
 make run-web
 ```
-3. Using API and API docs on `http://127.0.0.1:8000/docs` use `POST /api/dir_path` to set the path to dir from which PDFs will be loaded
-4. Run the crawler
+3. Using API and API docs on `http://127.0.0.1:8000/docs` use `POST /api/dir_path` endpoint to set the path to PDFs dir
+4. Run the Crawler
 ```bash
 make run-crawler
 ```
-5. Use API to query your PDFs
+5. Use the API to query PDFs
 
-## Improving PDF ingestion design
-### Current approach
+## Progress of Work
+
+### Improving PDF Ingestion Design
+#### Current Approach
 For each pdf file:
 1. `pdf_extract` - extracts each page's content in a loop and returns a list of PDFPages -> pages
 2. For each page in PDFPages:
@@ -58,7 +42,7 @@ For each pdf file:
       1. Prepares a record to be inserted into Milvus
       2. Puts that record in a list
 
-### Making it faster
+#### Making Things Faster
 
 There are a lot of improvements to be made to current approach. First thing we really need and that must be done synchronously is to parse the single pdf file and get its pages. After we get a list of pages we can start triggering concurrent/parallel jobs. Let's think about data ingestion in terms of a single page. So, for each page we need:
 1. Normalization
@@ -77,7 +61,7 @@ Let's try `asyncio` approach that operates in terms of a single page and run tha
 
 After refactoring it takes almost 10x less time to ingest PDFs into Vector DB.
 
-## PDF ingestion timings
+#### PDF ingestion timings
 Input: 2 pdfs with < 30 pages
 1. Straight forward approach of inserting pdfs consequently takes - 79s
 2. Making the worker and the function async - 79s
@@ -86,10 +70,5 @@ Input: 2 pdfs with < 30 pages
 5. Using concurrent approach with AsyncOpenAI client (improvements made described below) - ~10s
 
 
-## Todo
+### Todo
 - Better logging
-
-## Use
-- Run the app with providing path to folder where PDFs are located
-- Crawler periodically checks new pdfs and uploads them into Vector DB
-- App provides API to search those PDFs and cites sources
