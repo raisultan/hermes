@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from pymilvus import Collection
 
-from hermes.collection import IndexConfig
+from hermes.collection import CollectionConfig
 
 
 class SearchResult(BaseModel):
@@ -11,10 +11,10 @@ class SearchResult(BaseModel):
     distance: float
 
 
-def search(collection: Collection, idx_cfg: IndexConfig, embedding: list[float]) -> list[SearchResult]:
+def search(collection: Collection, coll_cfg: CollectionConfig, embedding: list[float]) -> list[SearchResult]:
     """Search for the nearest neighbors of the given embedding."""
     collection.load()
-    search_params = {'metric_type': idx_cfg.metric_type, 'params': idx_cfg.params}
+    search_params = {'metric_type': coll_cfg.metric_type, 'params': coll_cfg.params}
     raw_result = collection.search(
         [embedding],
         'embedding',

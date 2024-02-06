@@ -48,27 +48,28 @@ def disconnect_milvus() -> None:
 
 
 @dataclass(frozen=True)
-class IndexConfig:
+class CollectionConfig:
     index_type: str
     metric_type: str
     params: dict
 
 
 # https://milvus.io/docs/index.md#HNSW
-INDEX_CONFIG = IndexConfig(
+INDEX_CONFIG = CollectionConfig(
     index_type="HNSW",
     metric_type="COSINE",
     params={"M": 24, "efConstruction": 256},
 )
 
 
-def build_indexes(collection: Collection, idx_cfg: IndexConfig) -> None:
+def build_indexes(collection: Collection, coll_cfg: CollectionConfig) -> None:
     index = {
-        "index_type": idx_cfg.index_type,
-        "metric_type": idx_cfg.metric_type,
-        "params": idx_cfg.params,
+        "index_type": coll_cfg.index_type,
+        "metric_type": coll_cfg.metric_type,
+        "params": coll_cfg.params,
     }
     collection.create_index("embedding", index)
+    collection.flush()
 
 
 def get_collection(collection_name: str) -> Collection:
