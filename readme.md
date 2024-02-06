@@ -23,7 +23,7 @@ docker compose -f milvus-docker-compose.yaml up -d
 ```bash
 make run-web
 ```
-3. **Configure PDF Directory Path**
+3. **Configure PDF Directory Path**\
 Navigate to `http://127.0.0.1:8000/docs` and use the POST `/api/dir_path` endpoint to specify the path to your PDFs directory.
 4. **Launch the Crawler**
 ```bash
