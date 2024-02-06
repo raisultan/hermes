@@ -27,7 +27,7 @@ Hermes is specifically designed to facilitate the efficient and effective search
         - **Document Ingestion API:** Allows for adding new documents to the system.
         - **Search API:** Enables semantic search over the embedded documents.
 
-## How to run
+## How to use
 1. Run Milvus Vector database
 ```bash
 docker compose -f milvus-docker-compose.yaml up -d
