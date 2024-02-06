@@ -3,33 +3,40 @@
 ![hermes](hermes.jpg)
 
 ## Overview
-Hermes is specifically designed to facilitate the efficient and effective search of documents within a specified folder and its subfolders. At its core, the system boasts a user-friendly and straightforward API, making it accessible for users to search and retrieve information seamlessly. One of the standout features of Hermes is its ability to not only identify relevant documents but also cite the specific sources, pinpointing the exact page number and presenting the associated content. This feature enhances the user's experience by providing detailed and precise search results. Furthermore, the system is optimized for speed and smooth operation, ensuring that searches through extensive collections of PDF documents are conducted swiftly and results are delivered promptly. The combination of these features makes Hermes an ideal solution for those seeking a local document search system that is both efficient and thorough.
+Hermes simplifies document searching within specified directories, offering precise and quick retrieval of PDF documents. By combining a user-friendly API with powerful search capabilities, Hermes highlights relevant documents and their exact locations, facilitating efficient information access.
 
-## Components
-1. **API:** provides an interface search PDFs and to set directory path in which PDFs are located
-2. **Crawler:** periodically checks and ingests PDFs into Vector DB if there are any changes in dir itself or in sub-dirs
+## Key Components
+- **API:** Facilitates searching within PDFs and setting the directory path for the PDFs.
+- **Crawler:** Automatically updates the database with new or modified PDFs by monitoring specified directories.
 
-## Use
-1. Run Milvus Vector DB
+## Getting Started
+### Prerequisites
+- Docker
+- Make
+
+## Setup
+1. **Start Milvus Vector DB**
 ```bash
 docker compose -f milvus-docker-compose.yaml up -d
 ```
-2. Run the API component
+2. **Run the API component**
 ```bash
 make run-web
 ```
-3. Using API and API docs on `http://127.0.0.1:8000/docs` use `POST /api/dir_path` endpoint to set the path to PDFs dir
-4. Run the Crawler
+3. **Configure PDF Directory Path**
+Navigate to `http://127.0.0.1:8000/docs` and use the POST `/api/dir_path` endpoint to specify the path to your PDFs directory.
+4. **Launch the Crawler**
 ```bash
 make run-crawler
 ```
-5. Use the API to query PDFs
+5. **Query Your PDFs**
+Utilize the API to perform your document searches.
 
 ## Progress of Work
 
-### Improving PDF Ingestion Design
-#### Current Approach
-For each pdf file:
+### Enhancing PDF Ingestion
+#### Old Approach
+For each PDF:
 1. `pdf_extract` - extracts each page's content in a loop and returns a list of PDFPages -> pages
 2. For each page in PDFPages:
    1. `normalize(page.content)` - normalizes content of the page -> normalized
@@ -61,13 +68,10 @@ Let's try `asyncio` approach that operates in terms of a single page and run tha
 
 After refactoring it takes almost 10x less time to ingest PDFs into Vector DB.
 
-#### PDF ingestion timings
+#### PDF Ingestion Timings
 Input: 2 pdfs with < 30 pages
-1. Straight forward approach of inserting pdfs consequently takes - 79s
-2. Making the worker and the function async - 79s
-3. Async with `asyncio.gather` - 79s
-4. Each pdf in its own process using `concurrent.futures.ProcessPoolExecutor` - 96s
-5. Using concurrent approach with AsyncOpenAI client (improvements made described below) - ~10s
+- Initial sequential approach: ~79 seconds
+- Improved concurrent approach with `AsyncOpenAI` client: ~10 seconds
 
 
 ### Todo
