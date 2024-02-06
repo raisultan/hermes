@@ -27,6 +27,22 @@ Hermes is specifically designed to facilitate the efficient and effective search
         - **Document Ingestion API:** Allows for adding new documents to the system.
         - **Search API:** Enables semantic search over the embedded documents.
 
+## How to run
+1. Run Milvus Vector database
+```bash
+docker compose -f milvus-docker-compose.yaml up -d
+```
+2. Run API to handle search and setting path to your PDFs directory
+```bash
+make run-web
+```
+3. Using API and API docs use `POST /api/dir_path` to set the path to dir from which PDFs will be loaded
+4. Run the crawler
+```bash
+make run-crawler
+```
+5. Use API to query your PDFs
+
 ## Improving PDF ingestion design
 ### Current approach
 For each pdf file:

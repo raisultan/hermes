@@ -29,7 +29,7 @@ async def get_embedding(text: str, model: str = EMBEDDING_MODEL) -> list[float]:
 
 
 # Copied from: https://cookbook.openai.com/examples/embedding_long_inputs
-def batched(iterable: Iterable, n: int) -> Generator[tuple]:
+def batched(iterable: Iterable, n: int) -> Generator[tuple, None, None]:
     """Batch data into tuples of length n. The last batch may be shorter."""
     # batched('ABCDEFG', 3) --> ABC DEF G
     if n < 1:
@@ -39,7 +39,7 @@ def batched(iterable: Iterable, n: int) -> Generator[tuple]:
         yield batch
 
 
-def chunked_tokens(text: str, encoding_name: str, chunk_length: int) -> Generator[list[str]]:
+def chunked_tokens(text: str, encoding_name: str, chunk_length: int) -> Generator[list[str], None, None]:
     """Chunk text into tokens of length chunk_length."""
     encoding = tiktoken.get_encoding(encoding_name)
     tokens = encoding.encode(text)
