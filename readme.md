@@ -36,7 +36,7 @@ docker compose -f milvus-docker-compose.yaml up -d
 ```bash
 make run-web
 ```
-3. Using API and API docs use `POST /api/dir_path` to set the path to dir from which PDFs will be loaded
+3. Using API and API docs on `http://127.0.0.1:8000/docs` use `POST /api/dir_path` to set the path to dir from which PDFs will be loaded
 4. Run the crawler
 ```bash
 make run-crawler
