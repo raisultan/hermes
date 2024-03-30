@@ -1,7 +1,5 @@
 ## Hermes - Semantic Document Search
 
-![hermes](hermes.jpg)
-
 ## Overview
 Hermes simplifies document searching within specified directories, offering precise and quick retrieval of PDF documents. By combining a user-friendly API with powerful search capabilities, Hermes highlights relevant documents and their exact locations, facilitating efficient information access.
 
@@ -72,7 +70,3 @@ After refactoring it takes almost 10x less time to ingest PDFs into Vector DB.
 Input: 2 pdfs with < 30 pages
 - Initial sequential approach: ~79 seconds
 - Improved concurrent approach with `AsyncOpenAI` client: ~10 seconds
-
-
-### Todo
-- Better logging
