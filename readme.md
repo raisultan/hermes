@@ -1,6 +1,5 @@
 ## Hermes - Semantic Document Search
 
-## Overview
 Hermes simplifies document searching within specified directories, offering precise and quick retrieval of PDF documents. By combining a user-friendly API with powerful search capabilities, Hermes highlights relevant documents and their exact locations, facilitating efficient information access.
 
 ## Key Components
